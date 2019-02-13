@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Card from './Card';
 import ButtonSection from './ButtonSection';
 import {
-  makeCards, returnCardToBeDealt,
+  makeCards, make5Decks, returnCardToBeDealt,
   returnNewDeckOfCardsWithSpecificCardRemoved, totalValueOfCards,
   endOfGameMessage, deal2CardsToUserAnd1CardToDealer,
 } from './utils/utilFunctions';
@@ -10,7 +10,7 @@ import { TableStyles } from './Styles';
 
 const BlackJackTable = () => {
   // state
-  const [mainDeckOfCards, setMainDeckOfCards] = useState(makeCards());
+  const [mainDeckOfCards, setMainDeckOfCards] = useState(make5Decks());
   const [started, setStarted] = useState(false);
   const [finished, setFinished] = useState(false);
   const [cardsDealtToUser, setCardsDealtToUser] = useState([]);

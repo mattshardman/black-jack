@@ -19,7 +19,15 @@ const makeCards = () => {
     return acc;
   }, []);
 
-  return [].concat(...cards);
+  const deck = [].concat(...cards);
+
+  return deck;
+};
+
+const make5Decks = () => {
+  const decks = [...Array(5)].map(() => makeCards());
+  const deckArray = [].concat(...decks);
+  return deckArray;
 };
 
 const rand = max => Math.floor(Math.random() * max);
@@ -77,6 +85,7 @@ function deal2CardsToUserAnd1CardToDealer(currentPackCards) {
 
 export {
   makeCards,
+  make5Decks,
   rand,
   returnNewDeckOfCardsWithSpecificCardRemoved,
   returnCardToBeDealt,
