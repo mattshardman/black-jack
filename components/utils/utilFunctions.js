@@ -24,22 +24,31 @@ const makeCards = () => {
   return deck;
 };
 
+function shuffleArray(array) {
+  const shuffledArray = array.map(a => ({ sort: Math.random(), value: a }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(a => a.value);
+  return shuffledArray;
+}
+
 const make5Decks = () => {
   const decks = [...Array(5)].map(() => makeCards());
   const deckArray = [].concat(...decks);
-  return deckArray;
+  const shuffledDeckArray = shuffleArray(deckArray);
+  return shuffledDeckArray;
 };
 
 const rand = max => Math.floor(Math.random() * max);
 
 function returnNewDeckOfCardsWithSpecificCardRemoved(card, currentPackCards) {
   const cardIndex = currentPackCards.indexOf(card);
-  const newPackCards = currentPackCards.filter((each, index) => index !== cardIndex);
-  return newPackCards;
+  const newPackCardsWithCardRemoved = currentPackCards.filter((each, index) => index !== cardIndex);
+  const newPackOfCards = [...newPackCardsWithCardRemoved, card];
+  return newPackOfCards;
 }
 
 function returnCardToBeDealt(currentPackCards) {
-  const card = currentPackCards[rand(currentPackCards.length)];
+  const card = currentPackCards[0];
   return card;
 }
 
@@ -51,6 +60,22 @@ function totalValueOfCards(input) {
 
   const result = cardTotal > 21 ? 'BUST' : cardTotal;
   return result;
+}
+
+function didUserWin(userTotal, dealerTotal) {
+  if (userTotal === 'BUST') {
+    return false;
+  }
+
+  if (dealerTotal === 'BUST') {
+    return true;
+  }
+
+  if (userTotal > dealerTotal) {
+    return true;
+  }
+
+  return false;
 }
 
 function endOfGameMessage(userTotal, dealerTotal) {
@@ -90,6 +115,7 @@ export {
   returnNewDeckOfCardsWithSpecificCardRemoved,
   returnCardToBeDealt,
   totalValueOfCards,
+  didUserWin,
   endOfGameMessage,
   deal2CardsToUserAnd1CardToDealer,
 };

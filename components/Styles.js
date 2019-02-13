@@ -115,6 +115,19 @@ h1 {
   border-radius: 5px;
 }
 
+.scores {
+  height: 40px;
+  margin: 0 auto;
+  width: 200px;
+  border: #FF0266 1px solid;
+  color: #FFF;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5px;
+}
+
 @media (max-width: 500px) {
   .total {
     position: absolute;
