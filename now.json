@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "alias": "blackjack",
+  "alias": ["blackjack", "wackjack"],
   "builds": [
     {
       "src": "package.json",
       "use": "@now/static-build",
       "config": { "distDir": "out" }
-    }
+    },
+    { "src": "service-worker.js", "use": "@now/static" }
   ]
 }

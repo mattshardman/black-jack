@@ -1,48 +1,5 @@
 export const TableStyles = () => (
   <style jsx>{`
-.title {
-  position: absolute;    
-  color: #fff;
-  font-family: Lobster, cursive;
-  text-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: all 400ms;
-  text-align: center;
-}
-
-.title-center {
-  top: 40%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 120px;
-}
-
-@media (max-width: 500px) {
-  .title-center {
-    top: 40%;
-    font-size: 30px;    
-  }
-}
-
-.title-left {      
-  top: 20px;
-  left: 20px;
-  font-size: 40px;
-  transition: all 400ms;
-}
-
-@media (max-width: 500px) {
-  .title-left {
-    top: 10px;
-    left: 10px;
-    font-size: 30px;
-    transition: all 400ms;     
-  }
-}
-
-h1 {
-  margin: 0;
-}
-
 .table {
   position: absolute;
   top: 0;
@@ -50,44 +7,76 @@ h1 {
   left: 0;
   right: 0;
   width: 100%;
-  background: #484848;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font-family: Open Sans, sans-serif;
 }
 
-.cards {
+.bg {
+  z-index: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: url("https://upload.wikimedia.org/wikipedia/commons/3/33/Blackjack21.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.bg:after {
+  z-index: 0;
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.8) 10%, rgba(0,0,0,1) 50%);
+}
+
+.content {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  height: 25%;
-  perspective: 800px;
-  width: 50%;
-  transition: min-width 400ms;
- 
+  font-family: Open Sans, sans-serif;
 }
 
-.cards::-webkit-scrollbar { 
-  display: none; 
+h1 {
+  margin: 0;
 }
 
-.card-slider {
-  display: flex;
-  width: 400%;
+.section-title {
+  font-size: 16px;
+  width: 90%;
+  padding: 0;
 }
 
-@media (max-width: 500px) {
-  .cards {
-    width: 95%;
-    overflow-X: scroll;
-    overflow-Y: visible;
-  }
+.score-number {
+  color: #B9090B;
+}
+
+p {
+  color: #bababa;
+  text-align: left;
+  margin: 0;
 }
 
 .message {
   width: 100%;
-  height: 10%;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center; 
@@ -95,35 +84,22 @@ h1 {
 }
 
 .total-wrapper {
-  height: 20%;
+  height: 40px;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-}
-
-.total {
-  height: 40px;
-  margin: 0 auto;
-  width: 80px;
-  border: #FF0266 1px solid;
-  color: #FFF;
-  font-weight: 700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
 }
 
 .scores {
   height: 40px;
   margin: 0 auto;
-  width: 200px;
-  border: #FF0266 1px solid;
-  color: #FFF;
-  font-weight: 700;
+  font-size: 14px;
+  width: 90%;
+  color: #fff;
+  font-weight: 500;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   border-radius: 5px;
 }

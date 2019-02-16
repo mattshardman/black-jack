@@ -4,11 +4,13 @@ import { TableStyles } from './Styles';
 
 const WhoWonMessage = ({ winner }) => (
   <div className="message">
-    { winner && <h1 className="winner">{winner}</h1> }
+    { winner && <h3 className="winner">{winner}</h3> }
     <TableStyles />
   </div>
 );
 
-
+WhoWonMessage.propTypes = {
+  winner: PropTypes.bool.isRequired,
+};
 
 export default WhoWonMessage;

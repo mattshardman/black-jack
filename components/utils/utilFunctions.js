@@ -53,10 +53,20 @@ function returnCardToBeDealt(currentPackCards) {
 }
 
 function totalValueOfCards(input) {
+  let hasAce = false;
   const cardTotal = input.reduce((acc, each) => {
+    if (each.number === 'A') {
+      hasAce = true;
+    }
     const newAcc = acc + each.value;
     return newAcc;
   }, 0);
+
+  // play ace high unless this makes hand go bust
+  if (hasAce && (cardTotal + 10) <= 21) {
+    const result = cardTotal + 10;
+    return result;
+  }
 
   const result = cardTotal > 21 ? 'BUST' : cardTotal;
   return result;

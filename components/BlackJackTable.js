@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Card from './Card';
 import ButtonSection from './ButtonSection';
 import {
   make5Decks, returnCardToBeDealt,
@@ -9,17 +8,22 @@ import {
 } from './utils/utilFunctions';
 import { TableStyles } from './Styles';
 import WhoWonMessage from './WhoWonMessage';
+import DisplayCards from './DisplayCards';
+import Logo from './Logo';
+
 
 const BlackJackTable = () => {
+  const storedScores = process.browser ? JSON.parse(localStorage.getItem('scores')) : null;
+  const startingScores = storedScores || { userScore: 0, dealerScore: 0 };
   // state
   const [gameInitiated, setGameInitiated] = useState(false);
   const [started, setStarted] = useState(false);
   const [finished, setFinished] = useState(false);
   const [mainDeckOfCards, setMainDeckOfCards] = useState(make5Decks());
-  const [scores, setScores] = useState({ userScore: 0, dealerScore: 0 });
+  const [scores, setScores] = useState(startingScores);
   const [userTotalCardValue, setUserTotalCardValue] = useState(0);
   const [cardsDealtToUser, setCardsDealtToUser] = useState([]);
-  const [cardsDealtToDealer, setCardsDealtToDealer] = useState([]);
+  const [cardsDealtToDealer, setCardsDealtToDealer] = useState([[]]);
   const [winner, setWinner] = useState(null);
 
   function keepDealingCardsToDealerUntilTotalGreaterThan14(input, currentMainDeckOfCards) {
@@ -66,9 +70,15 @@ const BlackJackTable = () => {
 
     setWinner(winnerMessage);
     if (userWon) {
-      setScores({ ...currentScores, userScore: currentScores.userScore + 1 });
+      const newScores = { ...currentScores, userScore: currentScores.userScore + 1 };
+      setScores(newScores);
+      localStorage.clear();
+      localStorage.setItem('scores', JSON.stringify(newScores));
     } else {
-      setScores({ ...currentScores, dealerScore: currentScores.dealerScore + 1 });
+      const newScores = { ...currentScores, dealerScore: currentScores.dealerScore + 1 };
+      setScores(newScores);
+      localStorage.clear();
+      localStorage.setItem('scores', JSON.stringify(newScores));
     }
     setFinished(true);
   }
@@ -92,7 +102,6 @@ const BlackJackTable = () => {
     }
   });
 
-
   const btnProps = {
     started,
     start,
@@ -106,42 +115,48 @@ const BlackJackTable = () => {
 
   return (
     <section className="table">
-      <div className={gameInitiated ? 'title title-left' : 'title title-center'}>Black Jack</div>
+      <div className="content">
+        {!gameInitiated && <Logo />}
 
-      <div className="total-wrapper">
-        { gameInitiated && (
-        <div className="scores">
-          <div>You: {scores.userScore}</div>
-          <div>Dealer: {scores.dealerScore}</div>
+        <div className="total-wrapper">
+          { gameInitiated && (
+          <div className="scores">
+            <div>You: <span className="score-number">{scores.userScore}</span></div>
+            <div>Dealer: <span className="score-number">{scores.dealerScore}</span></div>
+            <div>Hand total: <span className="score-number">{userTotalCardValue}</span></div>
+          </div>
+          )}
         </div>
-        )}
-        { gameInitiated && <div className="total">{totalValueOfCards(cardsDealtToUser)}</div>}
-      </div>
 
-      <div className="cards">
-        <div className="card-slider">
-          { winner
-            && cardsDealtToDealer.map(card => <Card info={card} />)
-          }
+        <div className="section-title">
+          {started && <p>Dealer&apos;s Cards</p>}
         </div>
-      </div>
 
-      <WhoWonMessage winner={winner} />
+        <DisplayCards
+          isDisplayed={started}
+          title="Dealers Cards"
+          cardsToBeDealt={winner ? cardsDealtToDealer : [cardsDealtToDealer[0]]}
+        />
 
-      <div className="cards">
-        <div className="card-slider">
-          {cardsDealtToUser.map(card => (
-            <Card info={card} />
-          ))}
+        <WhoWonMessage winner={winner} />
+
+        <div className="section-title">
+          {started && <p>Your Cards</p>}
         </div>
+
+        <DisplayCards
+          isDisplayed
+          title="Your Cards"
+          cardsToBeDealt={cardsDealtToUser}
+        />
+
+        <ButtonSection
+          {...btnProps}
+        />
+
+        <TableStyles />
       </div>
-
-      <ButtonSection
-        {...btnProps}
-      />
-
-      <TableStyles />
-
+      <div className="bg" />
     </section>
   );
 };
