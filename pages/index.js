@@ -4,12 +4,11 @@ import BlackJackTable from '../components/BlackJackTable';
 export default class Index extends React.Component {
   componentDidMount() {
     if ('serviceWorker' in navigator) {
-      console.log('Will the service worker register?');
       navigator.serviceWorker.register('/service-worker.js')
-        .then((reg) => {
-          console.log('Yes, it did.');
+        .then(() => {
+          console.log('Registered');
         }).catch((err) => {
-          console.log("No it didn't. This happened: ", err);
+          console.log('error', err);
         });
     }
   }

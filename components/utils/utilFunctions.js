@@ -31,8 +31,8 @@ function shuffleArray(array) {
   return shuffledArray;
 }
 
-const make5Decks = () => {
-  const decks = [...Array(5)].map(() => makeCards());
+const makeDecks = (num) => {
+  const decks = [...Array(num)].map(() => makeCards());
   const deckArray = [].concat(...decks);
   const shuffledDeckArray = shuffleArray(deckArray);
   return shuffledDeckArray;
@@ -120,7 +120,7 @@ function deal2CardsToUserAnd1CardToDealer(currentPackCards) {
 
 export {
   makeCards,
-  make5Decks,
+  makeDecks,
   rand,
   returnNewDeckOfCardsWithSpecificCardRemoved,
   returnCardToBeDealt,
