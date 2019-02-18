@@ -76,6 +76,7 @@ const BlackJackTable = () => {
     setGameState(prevGameState => ({
       ...prevGameState,
       started: false,
+      totalValueOfCards: 0,
       winner: null,
     }));
 
@@ -87,33 +88,28 @@ const BlackJackTable = () => {
   }
 
   function stick() {
-    const userTotal = totalValueOfCards(cardState.cardsDealtToUser);
-    const dealerTotal = totalValueOfCards(cardState.cardsDealtToDealer);
-    const userWon = didUserWin(userTotal, dealerTotal);
-    const winnerMessage = endOfGameMessage(userTotal, dealerTotal);
+    setGameState((prevGameState) => {
+      const userTotal = totalValueOfCards(cardState.cardsDealtToUser);
+      const dealerTotal = totalValueOfCards(cardState.cardsDealtToDealer);
+      const userWon = didUserWin(userTotal, dealerTotal);
+      const winnerMessage = endOfGameMessage(userTotal, dealerTotal);
 
-    setGameState(state => ({
-      ...state,
-      winner: winnerMessage,
-      userTotalCardValue: userTotal,
-      finished: true,
-    }));
-
-    if (userWon) {
       setScores((prevScore) => {
-        const newScores = { ...prevScore, userScore: prevScore.userScore + 1 };
+        const newScores = userWon
+          ? { ...prevScore, userScore: prevScore.userScore + 1 }
+          : { ...prevScore, dealerScore: prevScore.dealerScore + 1 };
         localStorage.clear();
         localStorage.setItem('scores', JSON.stringify(newScores));
         return newScores;
       });
-    } else {
-      setScores((prevScore) => {
-        const newScores = { ...prevScore, dealerScore: prevScore.dealerScore + 1 };
-        localStorage.clear();
-        localStorage.setItem('scores', JSON.stringify(newScores));
-        return newScores;
-      });
-    }
+
+      return {
+        ...prevGameState,
+        winner: winnerMessage,
+        userTotalCardValue: userTotal,
+        finished: true,
+      };
+    });
   }
 
   function hit() {
