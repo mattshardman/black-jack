@@ -36,8 +36,7 @@ const Card = ({ info }) => {
           flex-direction: column;
           height: 180px;
           width: 126px;
-          background: radial-gradient(#fff, #ddd);
-         
+          background: radial-gradient(#fff, #ddd);   
           margin-right: 10px;
           animation-name: rotate;
           animation-iteration-count: 1;
@@ -121,7 +120,10 @@ const Card = ({ info }) => {
 };
 
 Card.propTypes = {
-  info: PropTypes.string.isRequired,
+  info: PropTypes.shape({
+    number: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Card;

@@ -1,3 +1,5 @@
+import uuid from 'uuid';
+
 const makeCards = () => {
   const suits = [{ suit: 'Hearts', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550000293/lambda/heart.png' },
     { suit: 'Spades', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550000103/lambda/club.png' },
@@ -10,6 +12,7 @@ const makeCards = () => {
 
   const cards = suits.reduce((acc, suit) => {
     const cardObj = numbers.map((number, index) => ({
+      id: uuid(),
       suit: suit.suit,
       img: suit.img,
       number,

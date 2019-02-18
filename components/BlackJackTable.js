@@ -15,8 +15,8 @@ import Logo from './Logo';
 const BlackJackTable = () => {
   const storedScores = process.browser ? JSON.parse(localStorage.getItem('scores')) : null;
   const startingScores = storedScores || { userScore: 0, dealerScore: 0 };
-  // state
 
+  // state
   const [gameState, setGameState] = useState({
     gameInitiated: false,
     started: false,
@@ -24,7 +24,6 @@ const BlackJackTable = () => {
     userTotalCardValue: 0,
     winner: null,
   });
-
 
   const [cardState, setCardState] = useState({
     mainDeckOfCards: makeDecks(5),
@@ -175,11 +174,11 @@ const BlackJackTable = () => {
 
         <DisplayCards
           isDisplayed={gameState.started}
-          title="Dealers Cards"
+          id="dealer-cards"
           cardsToBeDealt={gameState.winner ? cardState.cardsDealtToDealer : [cardState.cardsDealtToDealer[0]]}
         />
 
-        <WhoWonMessage winner={gameState.winner} />
+        <WhoWonMessage winner={gameState.winner || ''} />
 
         <div className="section-title">
           {gameState.started && <p>Your Cards</p>}
@@ -187,7 +186,7 @@ const BlackJackTable = () => {
 
         <DisplayCards
           isDisplayed
-          title="Your Cards"
+          id="your-cards"
           cardsToBeDealt={cardState.cardsDealtToUser}
         />
 
