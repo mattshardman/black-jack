@@ -75,7 +75,11 @@ function totalValueOfCards(input) {
   return result;
 }
 
-function didUserWin(userTotal, dealerTotal) {
+function didUserWin(userTotal, dealerTotal, userWasDealt21) {
+  if (userWasDealt21) {
+    return true;
+  }
+
   if (userTotal === 'BUST') {
     return false;
   }
@@ -88,7 +92,25 @@ function didUserWin(userTotal, dealerTotal) {
     return true;
   }
 
+  if (userTotal === dealerTotal) {
+    return 'draw';
+  }
+
   return false;
+}
+
+function returnScores(prevScore, userWon) {
+  let newScores;
+  if (userWon === 'draw') {
+    newScores = { ...prevScore };
+  } else {
+    newScores = userWon
+      ? { ...prevScore, userScore: prevScore.userScore + 1 }
+      : { ...prevScore, dealerScore: prevScore.dealerScore + 1 };
+  }
+  localStorage.clear();
+  localStorage.setItem('scores', JSON.stringify(newScores));
+  return newScores;
 }
 
 function endOfGameMessage(userTotal, dealerTotal) {
@@ -129,6 +151,7 @@ export {
   returnCardToBeDealt,
   totalValueOfCards,
   didUserWin,
+  returnScores,
   endOfGameMessage,
   deal2CardsToUserAnd1CardToDealer,
 };

@@ -3,7 +3,7 @@ import AppBar from './appBar/AppBar';
 import {
   makeDecks, returnCardToBeDealt,
   returnNewDeckOfCardsWithSpecificCardRemoved, totalValueOfCards,
-  didUserWin,
+  didUserWin, returnScores,
   endOfGameMessage, deal2CardsToUserAnd1CardToDealer,
 } from './utils/utilFunctions';
 import { TableStyles } from './Styles';
@@ -12,7 +12,7 @@ import DisplayCards from './DisplayCards';
 import Logo from './Logo';
 
 
-const BlackJackTable = () => {
+export const BlackJackTable = () => {
   const storedScores = process.browser ? JSON.parse(localStorage.getItem('scores')) : null;
   const startingScores = storedScores || { userScore: 0, dealerScore: 0 };
 
@@ -64,21 +64,14 @@ const BlackJackTable = () => {
     }));
   }
 
-  function stick() {
+  function stick(userWasDealt21) {
     setGameState((prevGameState) => {
       const userTotal = totalValueOfCards(cardState.cardsDealtToUser);
       const dealerTotal = totalValueOfCards(cardState.cardsDealtToDealer);
-      const userWon = didUserWin(userTotal, dealerTotal);
+      const userWon = didUserWin(userTotal, dealerTotal, userWasDealt21);
       const winnerMessage = endOfGameMessage(userTotal, dealerTotal);
 
-      setScores((prevScore) => {
-        const newScores = userWon
-          ? { ...prevScore, userScore: prevScore.userScore + 1 }
-          : { ...prevScore, dealerScore: prevScore.dealerScore + 1 };
-        localStorage.clear();
-        localStorage.setItem('scores', JSON.stringify(newScores));
-        return newScores;
-      });
+      setScores(prevScore => returnScores(prevScore, userWon));
 
       return {
         ...prevGameState,
@@ -97,7 +90,8 @@ const BlackJackTable = () => {
     const userCardsInitialValue = totalValueOfCards(userCards);
 
     if (userCardsInitialValue === 21) {
-      return stick();
+      const userWasDealt21 = true;
+      return stick(userWasDealt21);
     }
 
     setGameState({
