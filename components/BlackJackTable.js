@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ButtonSection from './ButtonSection';
+import AppBar from './appBar/AppBar';
 import {
   makeDecks, returnCardToBeDealt,
   returnNewDeckOfCardsWithSpecificCardRemoved, totalValueOfCards,
@@ -49,33 +49,11 @@ const BlackJackTable = () => {
     return null;
   }
 
-  function start() {
-    const currentMainDeckOfCards = [...cardState.mainDeckOfCards];
-    const initialDeal = deal2CardsToUserAnd1CardToDealer(currentMainDeckOfCards);
-    const deckOfCardsWithDealtCardsRemoved = initialDeal.cards;
-    const [dealerCard, ...userCards] = initialDeal.dealtCards;
-
-    setGameState({
-      gameInitiated: true,
-      started: true,
-      userTotalCardValue: totalValueOfCards(userCards),
-      finished: false,
-    });
-
-    setCardState({
-      mainDeckOfCards: deckOfCardsWithDealtCardsRemoved,
-      cardsDealtToUser: userCards,
-      cardsDealtToDealer: [dealerCard],
-    });
-
-    keepDealingCardsToDealerUntilTotalGreaterThan14([dealerCard], deckOfCardsWithDealtCardsRemoved);
-  }
-
   function reset() {
     setGameState(prevGameState => ({
       ...prevGameState,
       started: false,
-      totalValueOfCards: 0,
+      userTotalCardValue: 0,
       winner: null,
     }));
 
@@ -111,6 +89,34 @@ const BlackJackTable = () => {
     });
   }
 
+  function start() {
+    const currentMainDeckOfCards = [...cardState.mainDeckOfCards];
+    const initialDeal = deal2CardsToUserAnd1CardToDealer(currentMainDeckOfCards);
+    const deckOfCardsWithDealtCardsRemoved = initialDeal.cards;
+    const [dealerCard, ...userCards] = initialDeal.dealtCards;
+    const userCardsInitialValue = totalValueOfCards(userCards);
+
+    if (userCardsInitialValue === 21) {
+      return stick();
+    }
+
+    setGameState({
+      gameInitiated: true,
+      started: true,
+      userTotalCardValue: userCardsInitialValue,
+      finished: false,
+    });
+
+    setCardState({
+      mainDeckOfCards: deckOfCardsWithDealtCardsRemoved,
+      cardsDealtToUser: userCards,
+      cardsDealtToDealer: [dealerCard],
+    });
+
+    return keepDealingCardsToDealerUntilTotalGreaterThan14([dealerCard], deckOfCardsWithDealtCardsRemoved);
+  }
+
+
   function hit() {
     setCardState((prevCardState) => {
       const cardDealtToUser = returnCardToBeDealt(prevCardState.mainDeckOfCards);
@@ -126,7 +132,6 @@ const BlackJackTable = () => {
         ...prevCardState,
         mainDeckOfCards: newPack,
         cardsDealtToUser: newCardsDealtToUser,
-
       };
     });
   }
@@ -142,15 +147,13 @@ const BlackJackTable = () => {
     }
   });
 
-  const btnProps = {
+  const appBarProps = {
     start,
     stick,
     reset,
     hit,
     started: gameState.started,
     finished: gameState.finished,
-    setCardsDealtToDealer: cardState.setCardsDealtToUser,
-    cardsDealtToUser: gameState.cardsDealtToUser,
   };
 
   return (
@@ -190,8 +193,10 @@ const BlackJackTable = () => {
           cardsToBeDealt={cardState.cardsDealtToUser}
         />
 
-        <ButtonSection
-          {...btnProps}
+        <AppBar
+          background="#344955"
+          height="55px"
+          {...appBarProps}
         />
 
         <TableStyles />

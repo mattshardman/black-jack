@@ -26,14 +26,13 @@ function DisplayCards({ id, isDisplayed, cardsToBeDealt }) {
       >
         <i
           className="material-icons"
-          style={{ fontSize: 15 }}
-        >arrow_forward
+          style={{ fontSize: 16 }}
+        >arrow_forward_ios
         </i>
       </button>
       )
     }
       <div id={id} className="cards">
-
         <div className="card-slider">
           { isDisplayed
         && cardsToBeDealt.map(card => <Card key={card.id} info={card} />)
@@ -53,7 +52,7 @@ function DisplayCards({ id, isDisplayed, cardsToBeDealt }) {
         box-sizing: border-box;
         display: flex;
         align-items: center;
-        height: 180px;
+        height: 200px;
         perspective: 800px;
         width: 50%;
       }
@@ -70,9 +69,9 @@ function DisplayCards({ id, isDisplayed, cardsToBeDealt }) {
       .btn {
         z-index: 10;
         position: absolute;
-        height: 30px;
-        width: 30px;
-        background: red;
+        height: 35px;
+        width: 35px;
+        color: #344955;
         top: 50%;
         transform: translateY(-50%);
         right: 10px;
@@ -82,7 +81,7 @@ function DisplayCards({ id, isDisplayed, cardsToBeDealt }) {
         justify-content: center;
         align-items: center;
         border: none;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
         outline: none;
       }
       
