@@ -1,10 +1,10 @@
 import uuid from 'uuid';
 
 const makeCards = () => {
-  const suits = [{ suit: 'Hearts', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550000293/lambda/heart.png' },
-    { suit: 'Spades', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550000103/lambda/club.png' },
-    { suit: 'Clubs', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550010525/lambda/clubs.png' },
-    { suit: 'Diamonds', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550010523/lambda/diamond.png' }];
+  const suits = [{ suit: 'Hearts', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182708/lambda/hearts.png' },
+    { suit: 'Spades', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182715/lambda/spades.png' },
+    { suit: 'Clubs', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182705/lambda/clubs.png' },
+    { suit: 'Diamonds', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182712/lambda/diamonds.png' }];
 
   const numbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
@@ -120,6 +120,10 @@ function endOfGameMessage(userTotal, dealerTotal) {
 
   if (dealerTotal === 'BUST') {
     return 'You won, the dealer went BUST';
+  }
+
+  if (userTotal === dealerTotal) {
+    return 'It\'s a draw';
   }
 
   if (userTotal > dealerTotal) {

@@ -1,4 +1,6 @@
-import { totalValueOfCards, didUserWin, returnScores } from '../components/utils/utilFunctions';
+import {
+  totalValueOfCards, didUserWin, returnScores, endOfGameMessage,
+} from '../components/utils/utilFunctions';
 
 describe('Test totalValue func', () => {
   it('Ace should be low if ace high would cause bust', () => {
@@ -103,5 +105,38 @@ describe('Test returnScores func', () => {
     };
     const userWon = 'draw';
     expect(returnScores(prevScore, userWon)).toEqual({ userScore: 0, dealerScore: 0 });
+  });
+});
+
+describe('Test end of game messages', () => {
+  it('Should return user won message', () => {
+    const userTotal = 19;
+    const dealerTotal = 16;
+    expect(endOfGameMessage(userTotal, dealerTotal)).toEqual(`You won, the dealer got ${dealerTotal}`);
+  });
+
+  it('Should return dealer won message', () => {
+    const userTotal = 16;
+    const dealerTotal = 19;
+    expect(endOfGameMessage(userTotal, dealerTotal)).toEqual(`You lost, the dealer got ${dealerTotal}`);
+  });
+
+
+  it('Should return you lost message if user total is BUST', () => {
+    const userTotal = 'BUST';
+    const dealerTotal = 19;
+    expect(endOfGameMessage(userTotal, dealerTotal)).toEqual('You lost, you went BUST');
+  });
+
+  it('Should return you won message if dealer total is BUST', () => {
+    const userTotal = 19;
+    const dealerTotal = 'BUST';
+    expect(endOfGameMessage(userTotal, dealerTotal)).toEqual('You won, the dealer went BUST');
+  });
+
+  it('Should return you lost message if both are BUST', () => {
+    const userTotal = 'BUST';
+    const dealerTotal = 'BUST';
+    expect(endOfGameMessage(userTotal, dealerTotal)).toEqual('You lost, you went BUST');
   });
 });

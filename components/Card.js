@@ -68,7 +68,6 @@ const Card = ({ info }) => {
           height: 65%;
           width: 60%;
           border-radius: 5px;
-          border: 1px #ddd solid;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -80,7 +79,7 @@ const Card = ({ info }) => {
 
         @media (max-width: 500px) {
           .main-img {
-            height: 30px;
+            height: 40px;
           }
         }
 

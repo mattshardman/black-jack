@@ -10,6 +10,8 @@ import { TableStyles } from './Styles';
 import WhoWonMessage from './WhoWonMessage';
 import DisplayCards from './DisplayCards';
 import Logo from './Logo';
+import SectionTitle from './SectionTitle';
+import ScoresSection from './ScoresSection';
 
 
 export const BlackJackTable = () => {
@@ -155,19 +157,12 @@ export const BlackJackTable = () => {
       <div className="content">
         {!gameState.gameInitiated && <Logo />}
 
-        <div className="total-wrapper">
-          { gameState.gameInitiated && (
-          <div className="scores">
-            <div>You: <span className="score-number">{scores.userScore}</span></div>
-            <div>Dealer: <span className="score-number">{scores.dealerScore}</span></div>
-            <div>Hand total: <span className="score-number">{gameState.userTotalCardValue}</span></div>
-          </div>
-          )}
-        </div>
+        <ScoresSection gameState={gameState} scores={scores} />
 
-        <div className="section-title">
-          {gameState.started && <p>Dealer&apos;s Cards</p>}
-        </div>
+        <SectionTitle
+          title="Dealer's Cards"
+          gameStarted={gameState.started}
+        />
 
         <DisplayCards
           isDisplayed={gameState.started}
@@ -177,9 +172,10 @@ export const BlackJackTable = () => {
 
         <WhoWonMessage winner={gameState.winner || ''} />
 
-        <div className="section-title">
-          {gameState.started && <p>Your Cards</p>}
-        </div>
+        <SectionTitle
+          title="Your Cards"
+          gameStarted={gameState.started}
+        />
 
         <DisplayCards
           isDisplayed
