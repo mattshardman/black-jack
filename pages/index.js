@@ -1,7 +1,7 @@
 import React from 'react';
 import BlackJackTable from '../components/BlackJackTable';
 
-export default class Index extends React.Component {
+class Index extends React.Component {
   componentDidMount() {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
@@ -17,3 +17,5 @@ export default class Index extends React.Component {
     return <BlackJackTable />;
   }
 }
+
+export default Index;

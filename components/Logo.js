@@ -21,6 +21,12 @@ function Logo() {
 
   return (
     <div className="logo-wrapper">
+      <img
+        className="logo-image"
+        src="https://res.cloudinary.com/dgdniqfi9/image/upload/v1550240315/lambda/cards.png"
+        alt=""
+        width="25%"
+      />
       <div className="logo">
         {titleLetters[0] ? <span>{titleLetters[0]}</span> : null}
         {titleLetters[1] ? <span>{titleLetters[1]}</span> : null}
@@ -36,10 +42,10 @@ function Logo() {
       .logo-wrapper {
         position: absolute;
         top: 20%;
-        bottom: 20%;
         left: 0;
         right: 0;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         
@@ -47,10 +53,10 @@ function Logo() {
 
       .logo {
         font-size: 75px;
+        height: 90px;
         color: #000;
         display: flex;
         width: 300px;
-        
       }
 
       span {

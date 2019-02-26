@@ -1,10 +1,10 @@
 import uuid from 'uuid';
 
 const makeCards = () => {
-  const suits = [{ suit: 'Hearts', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550000293/lambda/heart.png' },
-    { suit: 'Spades', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550000103/lambda/club.png' },
-    { suit: 'Clubs', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550010525/lambda/clubs.png' },
-    { suit: 'Diamonds', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550010523/lambda/diamond.png' }];
+  const suits = [{ suit: 'Hearts', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182708/lambda/hearts.png' },
+    { suit: 'Spades', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182715/lambda/spades.png' },
+    { suit: 'Clubs', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182705/lambda/clubs.png' },
+    { suit: 'Diamonds', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182712/lambda/diamonds.png' }];
 
   const numbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
@@ -75,7 +75,11 @@ function totalValueOfCards(input) {
   return result;
 }
 
-function didUserWin(userTotal, dealerTotal) {
+function didUserWin(userTotal, dealerTotal, userWasDealt21) {
+  if (userWasDealt21) {
+    return true;
+  }
+
   if (userTotal === 'BUST') {
     return false;
   }
@@ -88,7 +92,25 @@ function didUserWin(userTotal, dealerTotal) {
     return true;
   }
 
+  if (userTotal === dealerTotal) {
+    return 'draw';
+  }
+
   return false;
+}
+
+function returnScores(prevScore, userWon) {
+  let newScores;
+  if (userWon === 'draw') {
+    newScores = { ...prevScore };
+  } else {
+    newScores = userWon
+      ? { ...prevScore, userScore: prevScore.userScore + 1 }
+      : { ...prevScore, dealerScore: prevScore.dealerScore + 1 };
+  }
+  localStorage.clear();
+  localStorage.setItem('scores', JSON.stringify(newScores));
+  return newScores;
 }
 
 function endOfGameMessage(userTotal, dealerTotal) {
@@ -98,6 +120,10 @@ function endOfGameMessage(userTotal, dealerTotal) {
 
   if (dealerTotal === 'BUST') {
     return 'You won, the dealer went BUST';
+  }
+
+  if (userTotal === dealerTotal) {
+    return 'It\'s a draw';
   }
 
   if (userTotal > dealerTotal) {
@@ -129,6 +155,7 @@ export {
   returnCardToBeDealt,
   totalValueOfCards,
   didUserWin,
+  returnScores,
   endOfGameMessage,
   deal2CardsToUserAnd1CardToDealer,
 };

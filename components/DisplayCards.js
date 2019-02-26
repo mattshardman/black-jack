@@ -27,7 +27,7 @@ function DisplayCards({ id, isDisplayed, cardsToBeDealt }) {
         <i
           className="material-icons"
           style={{ fontSize: 16 }}
-        >arrow_forward_ios
+        >arrow_forward
         </i>
       </button>
       )

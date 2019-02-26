@@ -59,12 +59,6 @@ h1 {
   margin: 0;
 }
 
-.section-title {
-  font-size: 16px;
-  width: 90%;
-  padding: 0;
-}
-
 .score-number {
   color: #faab1a;
 }

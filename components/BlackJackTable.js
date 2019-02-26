@@ -3,16 +3,18 @@ import AppBar from './appBar/AppBar';
 import {
   makeDecks, returnCardToBeDealt,
   returnNewDeckOfCardsWithSpecificCardRemoved, totalValueOfCards,
-  didUserWin,
+  didUserWin, returnScores,
   endOfGameMessage, deal2CardsToUserAnd1CardToDealer,
 } from './utils/utilFunctions';
 import { TableStyles } from './Styles';
 import WhoWonMessage from './WhoWonMessage';
 import DisplayCards from './DisplayCards';
 import Logo from './Logo';
+import SectionTitle from './SectionTitle';
+import ScoresSection from './ScoresSection';
 
 
-const BlackJackTable = () => {
+export const BlackJackTable = () => {
   const storedScores = process.browser ? JSON.parse(localStorage.getItem('scores')) : null;
   const startingScores = storedScores || { userScore: 0, dealerScore: 0 };
 
@@ -64,21 +66,14 @@ const BlackJackTable = () => {
     }));
   }
 
-  function stick() {
+  function stick(userWasDealt21) {
     setGameState((prevGameState) => {
       const userTotal = totalValueOfCards(cardState.cardsDealtToUser);
       const dealerTotal = totalValueOfCards(cardState.cardsDealtToDealer);
-      const userWon = didUserWin(userTotal, dealerTotal);
+      const userWon = didUserWin(userTotal, dealerTotal, userWasDealt21);
       const winnerMessage = endOfGameMessage(userTotal, dealerTotal);
 
-      setScores((prevScore) => {
-        const newScores = userWon
-          ? { ...prevScore, userScore: prevScore.userScore + 1 }
-          : { ...prevScore, dealerScore: prevScore.dealerScore + 1 };
-        localStorage.clear();
-        localStorage.setItem('scores', JSON.stringify(newScores));
-        return newScores;
-      });
+      setScores(prevScore => returnScores(prevScore, userWon));
 
       return {
         ...prevGameState,
@@ -97,7 +92,8 @@ const BlackJackTable = () => {
     const userCardsInitialValue = totalValueOfCards(userCards);
 
     if (userCardsInitialValue === 21) {
-      return stick();
+      const userWasDealt21 = true;
+      return stick(userWasDealt21);
     }
 
     setGameState({
@@ -161,19 +157,12 @@ const BlackJackTable = () => {
       <div className="content">
         {!gameState.gameInitiated && <Logo />}
 
-        <div className="total-wrapper">
-          { gameState.gameInitiated && (
-          <div className="scores">
-            <div>You: <span className="score-number">{scores.userScore}</span></div>
-            <div>Dealer: <span className="score-number">{scores.dealerScore}</span></div>
-            <div>Hand total: <span className="score-number">{gameState.userTotalCardValue}</span></div>
-          </div>
-          )}
-        </div>
+        <ScoresSection gameState={gameState} scores={scores} />
 
-        <div className="section-title">
-          {gameState.started && <p>Dealer&apos;s Cards</p>}
-        </div>
+        <SectionTitle
+          title="Dealer's Cards"
+          gameStarted={gameState.started}
+        />
 
         <DisplayCards
           isDisplayed={gameState.started}
@@ -183,9 +172,10 @@ const BlackJackTable = () => {
 
         <WhoWonMessage winner={gameState.winner || ''} />
 
-        <div className="section-title">
-          {gameState.started && <p>Your Cards</p>}
-        </div>
+        <SectionTitle
+          title="Your Cards"
+          gameStarted={gameState.started}
+        />
 
         <DisplayCards
           isDisplayed
