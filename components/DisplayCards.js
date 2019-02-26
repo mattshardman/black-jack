@@ -2,24 +2,59 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from './Card';
 
-function DisplayCards({ isDisplayed, cardsToBeDealt }) {
-  return (
-    <div id="cards" className="cards">
+function DisplayCards({ id, isDisplayed, cardsToBeDealt }) {
+  const slideRight = () => {
+    const mobileWidth = process.browser ? (window.innerWidth / 3) : 100;
+    const slider = document.querySelector(`#${id}`);
+    const width = mobileWidth * cardsToBeDealt.length;
 
-      <div className="card-slider">
-        { isDisplayed
-        && cardsToBeDealt.map(card => <Card info={card} />)
+    slider.scrollTo({
+      top: 0,
+      left: width,
+      behavior: 'smooth',
+    });
+  };
+
+  return (
+    <div className="display-card-wrapper">
+      { cardsToBeDealt.length > 2
+      && (
+      <button
+        type="button"
+        onClick={slideRight}
+        className="btn"
+      >
+        <i
+          className="material-icons"
+          style={{ fontSize: 16 }}
+        >arrow_forward_ios
+        </i>
+      </button>
+      )
+    }
+      <div id={id} className="cards">
+        <div className="card-slider">
+          { isDisplayed
+        && cardsToBeDealt.map(card => <Card key={card.id} info={card} />)
       }
+        </div>
+
       </div>
       <style jsx>{`
+      .display-card-wrapper {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+
       .cards {
+        position: relative;
         box-sizing: border-box;
         display: flex;
         align-items: center;
-        height: 180px;
+        height: 200px;
         perspective: 800px;
         width: 50%;
-        transition: min-width 400ms;
       }
       
       .cards::-webkit-scrollbar { 
@@ -29,6 +64,25 @@ function DisplayCards({ isDisplayed, cardsToBeDealt }) {
       .card-slider {
         display: flex;
         minWidth: 100%;
+      }
+
+      .btn {
+        z-index: 10;
+        position: absolute;
+        height: 35px;
+        width: 35px;
+        color: #344955;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+        outline: none;
       }
       
       @media (max-width: 500px) {
@@ -46,8 +100,9 @@ function DisplayCards({ isDisplayed, cardsToBeDealt }) {
 }
 
 DisplayCards.propTypes = {
+  id: PropTypes.string.isRequired,
   isDisplayed: PropTypes.bool.isRequired,
-  cardsToBeDealt: PropTypes.array.isRequired, //eslint-disable-line
+  cardsToBeDealt: PropTypes.arrayOf().isRequired,
 };
 
 export default DisplayCards;

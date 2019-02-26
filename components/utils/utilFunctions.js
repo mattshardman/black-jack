@@ -1,3 +1,5 @@
+import uuid from 'uuid';
+
 const makeCards = () => {
   const suits = [{ suit: 'Hearts', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550000293/lambda/heart.png' },
     { suit: 'Spades', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1550000103/lambda/club.png' },
@@ -10,6 +12,7 @@ const makeCards = () => {
 
   const cards = suits.reduce((acc, suit) => {
     const cardObj = numbers.map((number, index) => ({
+      id: uuid(),
       suit: suit.suit,
       img: suit.img,
       number,
@@ -31,8 +34,8 @@ function shuffleArray(array) {
   return shuffledArray;
 }
 
-const make5Decks = () => {
-  const decks = [...Array(5)].map(() => makeCards());
+const makeDecks = (num) => {
+  const decks = [...Array(num)].map(() => makeCards());
   const deckArray = [].concat(...decks);
   const shuffledDeckArray = shuffleArray(deckArray);
   return shuffledDeckArray;
@@ -120,7 +123,7 @@ function deal2CardsToUserAnd1CardToDealer(currentPackCards) {
 
 export {
   makeCards,
-  make5Decks,
+  makeDecks,
   rand,
   returnNewDeckOfCardsWithSpecificCardRemoved,
   returnCardToBeDealt,

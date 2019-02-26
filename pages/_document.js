@@ -26,9 +26,16 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content="#000" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
-          <style>{"body div header { box-sizing: border-box; } body { margin: 0; font-family: 'Open Sans', sans-serif; }"}</style>
+          <style>{`
+            body div header { 
+              box-sizing: border-box; 
+              overflow-x: hidden; 
+            } 
+            body { margin: 0; 
+            font-family: 'Open Sans', sans-serif; }`}
+          </style>
         </Head>
-        <body className="custom_class">
+        <body className="custom_class" style={{ overflowX: 'hidden' }}>
           <Main />
           <NextScript />
         </body>

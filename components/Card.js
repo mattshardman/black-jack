@@ -36,13 +36,13 @@ const Card = ({ info }) => {
           flex-direction: column;
           height: 180px;
           width: 126px;
-          background: radial-gradient(#fff, #ddd);
-         
+          border-radius: 5px;
+          background: radial-gradient(#fff, #fafafa);   
           margin-right: 10px;
           animation-name: rotate;
           animation-iteration-count: 1;
           animation-duration: 1s;
-          box-shadow: 0 3px 25px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
         }
 
         @media (max-width: 500px) {
@@ -121,7 +121,10 @@ const Card = ({ info }) => {
 };
 
 Card.propTypes = {
-  info: PropTypes.string.isRequired,
+  info: PropTypes.shape({
+    number: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Card;

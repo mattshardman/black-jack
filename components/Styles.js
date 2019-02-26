@@ -36,7 +36,7 @@ export const TableStyles = () => (
   left: 0;
   right: 0;
   width: 100%;
-  background: linear-gradient(180deg, rgba(0,0,0,0.8) 10%, rgba(0,0,0,1) 50%);
+  background: #f7faff;
 }
 
 .content {
@@ -46,6 +46,7 @@ export const TableStyles = () => (
   bottom: 0;
   left: 0;
   right: 0;
+  padding-bottom: 65px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -65,11 +66,11 @@ h1 {
 }
 
 .score-number {
-  color: #B9090B;
+  color: #faab1a;
 }
 
 p {
-  color: #bababa;
+  color: #000;
   text-align: left;
   margin: 0;
 }
@@ -96,7 +97,7 @@ p {
   margin: 0 auto;
   font-size: 14px;
   width: 90%;
-  color: #fff;
+  color: #000;
   font-weight: 500;
   display: flex;
   justify-content: space-between;
@@ -116,7 +117,7 @@ p {
 }
 
 .winner {
-  color: #fff;
+  color: #000;
   animation-name: fade;
   animation-iteration-count: 1;
   animation-duration: 2s;

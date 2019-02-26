@@ -9,7 +9,7 @@ function Logo() {
     if (counter < logoText.length) {
       setTimeout(() => {
         setTitleLetters(state => `${state}${logoText[counter]}`);
-        counter += 1;
+        counter += 1; //eslint-disable-line
         addText(counter);
       }, 50);
     }
@@ -47,7 +47,7 @@ function Logo() {
 
       .logo {
         font-size: 75px;
-        color: white;
+        color: #000;
         display: flex;
         width: 300px;
         
@@ -71,14 +71,14 @@ function Logo() {
 
         70% {
           opacity: 1;
-          color: #ddd;
+          color: #000;
           text-shadow: 20px 40px 4px  rgba(80,80,80,0.3);
           transform: scaleY(1.2) scaleX(1.1);
         }
 
         100% {
           opacity: 1;
-          color: #fff;
+          color: #000;
           text-shadow: none;
           transform: scale(0.95);
         }
