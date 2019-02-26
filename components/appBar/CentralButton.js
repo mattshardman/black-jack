@@ -61,7 +61,7 @@ CentralButton.propTypes = {
   icon: PropTypes.element.isRequired,
   background: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
-  isDisabled: PropTypes.func.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
   clickFunction: PropTypes.func.isRequired,
 };
 

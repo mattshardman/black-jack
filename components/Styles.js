@@ -14,31 +14,6 @@ export const TableStyles = () => (
   font-family: Open Sans, sans-serif;
 }
 
-.bg {
-  z-index: 0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  background: url("https://upload.wikimedia.org/wikipedia/commons/3/33/Blackjack21.jpg");
-  background-size: cover;
-  background-position: center;
-}
-
-.bg:after {
-  z-index: 0;
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  background: #f7faff;
-}
-
 .content {
   z-index: 100;
   position: absolute;

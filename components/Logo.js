@@ -28,15 +28,15 @@ function Logo() {
         width="25%"
       />
       <div className="logo">
-        {titleLetters[0] ? <span>{titleLetters[0]}</span> : null}
-        {titleLetters[1] ? <span>{titleLetters[1]}</span> : null}
-        {titleLetters[2] ? <span>{titleLetters[2]}</span> : null}
-        {titleLetters[3] ? <span>{titleLetters[3]}</span> : null}
-        {titleLetters[4] ? <span>{titleLetters[4]}</span> : null}
-        {titleLetters[5] ? <span>{titleLetters[5]}</span> : null}
-        {titleLetters[6] ? <span>{titleLetters[6]}</span> : null}
-        {titleLetters[7] ? <span>{titleLetters[7]}</span> : null}
-        {titleLetters[8] ? <span>{titleLetters[8]}</span> : null}
+        {!!titleLetters[0] && <span>{titleLetters[0]}</span>}
+        {!!titleLetters[1] && <span>{titleLetters[1]}</span>}
+        {!!titleLetters[2] && <span>{titleLetters[2]}</span>}
+        {!!titleLetters[3] && <span>{titleLetters[3]}</span>}
+        {!!titleLetters[4] && <span>{titleLetters[4]}</span>}
+        {!!titleLetters[5] && <span>{titleLetters[5]}</span>}
+        {!!titleLetters[6] && <span>{titleLetters[6]}</span>}
+        {!!titleLetters[7] && <span>{titleLetters[7]}</span>}
+        {!!titleLetters[8] && <span>{titleLetters[8]}</span>}
       </div>
       <style jsx>{`
       .logo-wrapper {

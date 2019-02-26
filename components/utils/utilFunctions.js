@@ -77,34 +77,34 @@ function totalValueOfCards(input) {
 
 function didUserWin(userTotal, dealerTotal, userWasDealt21) {
   if (userWasDealt21) {
-    return true;
+    return { userWon: true, draw: false };
   }
 
   if (userTotal === 'BUST') {
-    return false;
+    return { userWon: false, draw: false };
   }
 
   if (dealerTotal === 'BUST') {
-    return true;
+    return { userWon: true, draw: false };
   }
 
   if (userTotal > dealerTotal) {
-    return true;
+    return { userWon: true, draw: false };
   }
 
   if (userTotal === dealerTotal) {
-    return 'draw';
+    return { userWon: false, draw: true };
   }
 
-  return false;
+  return { userWon: false, draw: false };
 }
 
-function returnScores(prevScore, userWon) {
+function returnScores(prevScore, didUserWinObj) {
   let newScores;
-  if (userWon === 'draw') {
+  if (didUserWinObj.draw) {
     newScores = { ...prevScore };
   } else {
-    newScores = userWon
+    newScores = didUserWinObj.userWon
       ? { ...prevScore, userScore: prevScore.userScore + 1 }
       : { ...prevScore, dealerScore: prevScore.dealerScore + 1 };
   }
@@ -147,6 +147,33 @@ function deal2CardsToUserAnd1CardToDealer(currentPackCards) {
   return cardsDealt;
 }
 
+function startGame(cardState, stick) {
+  const currentMainDeckOfCards = [...cardState.mainDeckOfCards];
+  const initialDeal = deal2CardsToUserAnd1CardToDealer(currentMainDeckOfCards);
+  const deckOfCardsWithDealtCardsRemoved = initialDeal.cards;
+  const [dealerCard, ...userCards] = initialDeal.dealtCards;
+  const userCardsInitialValue = totalValueOfCards(userCards);
+
+  if (userCardsInitialValue === 21) {
+    const userWasDealt21 = true;
+    return stick(userWasDealt21);
+  }
+
+  return {
+    newGameState: {
+      gameInitiated: true,
+      started: true,
+      userTotalCardValue: userCardsInitialValue,
+      finished: false,
+    },
+    newCardState: {
+      mainDeckOfCards: deckOfCardsWithDealtCardsRemoved,
+      cardsDealtToUser: userCards,
+      cardsDealtToDealer: [dealerCard],
+    },
+  };
+}
+
 export {
   makeCards,
   makeDecks,
@@ -158,4 +185,5 @@ export {
   returnScores,
   endOfGameMessage,
   deal2CardsToUserAnd1CardToDealer,
+  startGame,
 };

@@ -31,7 +31,13 @@ const AppBar = ({
     <div className="app-bar">
       <div className="central-btn-wrapper">
         <CentralButton
-          icon={<BtnIcon icon="play_arrow" fontColor="#17262a" fontSize={30} />}
+          icon={(
+            <BtnIcon
+              icon="play_arrow"
+              fontColor="#17262a"
+              fontSize={30}
+            />
+)}
           background="#faab1a"
           color="#17262a"
           isDisabled={!!started && finished}
@@ -42,9 +48,10 @@ const AppBar = ({
       <div className="buttons-section">
         { appBarButtons.map(each => (
           <BarButton
+            key={each.icon}
             icon={<BtnIcon {...each} />}
             isDisabled={each.isDisabled}
-            clickFunction={each.clickFunction}
+            clickFunction={() => each.clickFunction(false)}
           />
         )) }
       </div>
@@ -65,7 +72,7 @@ const AppBar = ({
               display: flex;
               align-items: center;
               justify-content: space-between;
-              padding: 0 10%;
+              padding: 0 12%;
               -webkit-mask-image: radial-gradient(36px at 50% 0% , transparent 98%, ${background} 100%);
             }
 

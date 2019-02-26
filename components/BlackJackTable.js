@@ -4,7 +4,7 @@ import {
   makeDecks, returnCardToBeDealt,
   returnNewDeckOfCardsWithSpecificCardRemoved, totalValueOfCards,
   didUserWin, returnScores,
-  endOfGameMessage, deal2CardsToUserAnd1CardToDealer,
+  endOfGameMessage, startGame,
 } from './utils/utilFunctions';
 import { TableStyles } from './Styles';
 import WhoWonMessage from './WhoWonMessage';
@@ -35,7 +35,7 @@ export const BlackJackTable = () => {
 
   const [scores, setScores] = useState(startingScores);
 
-  function keepDealingCardsToDealerUntilTotalGreaterThan14(input, currentMainDeckOfCards) {
+  function keepDealingCardsToDealerUntilTotalGreaterThan15(input, currentMainDeckOfCards) {
     if (totalValueOfCards(input) < 15) {
       const card = returnCardToBeDealt(currentMainDeckOfCards);
       const dealerCards = [...input, card];
@@ -46,7 +46,8 @@ export const BlackJackTable = () => {
         cardsDealtToDealer: dealerCards,
         mainDeckOfCards: newCards,
       }));
-      return keepDealingCardsToDealerUntilTotalGreaterThan14(dealerCards, newCards);
+
+      return keepDealingCardsToDealerUntilTotalGreaterThan15(dealerCards, newCards);
     }
     return null;
   }
@@ -85,31 +86,12 @@ export const BlackJackTable = () => {
   }
 
   function start() {
-    const currentMainDeckOfCards = [...cardState.mainDeckOfCards];
-    const initialDeal = deal2CardsToUserAnd1CardToDealer(currentMainDeckOfCards);
-    const deckOfCardsWithDealtCardsRemoved = initialDeal.cards;
-    const [dealerCard, ...userCards] = initialDeal.dealtCards;
-    const userCardsInitialValue = totalValueOfCards(userCards);
+    const { newGameState, newCardState } = startGame(cardState, stick);
+    setGameState(newGameState);
+    setCardState(newCardState);
 
-    if (userCardsInitialValue === 21) {
-      const userWasDealt21 = true;
-      return stick(userWasDealt21);
-    }
-
-    setGameState({
-      gameInitiated: true,
-      started: true,
-      userTotalCardValue: userCardsInitialValue,
-      finished: false,
-    });
-
-    setCardState({
-      mainDeckOfCards: deckOfCardsWithDealtCardsRemoved,
-      cardsDealtToUser: userCards,
-      cardsDealtToDealer: [dealerCard],
-    });
-
-    return keepDealingCardsToDealerUntilTotalGreaterThan14([dealerCard], deckOfCardsWithDealtCardsRemoved);
+    const { cardsDealtToDealer, mainDeckOfCards } = newCardState;
+    return keepDealingCardsToDealerUntilTotalGreaterThan15(cardsDealtToDealer, mainDeckOfCards);
   }
 
 
@@ -135,7 +117,7 @@ export const BlackJackTable = () => {
   useEffect(() => {
     const isUserBust = gameState.userTotalCardValue === 'BUST';
     if (isUserBust) {
-      stick();
+      stick(false);
       setGameState(prevGameState => ({
         ...prevGameState,
         userTotalCardValue: 0,
@@ -191,7 +173,6 @@ export const BlackJackTable = () => {
 
         <TableStyles />
       </div>
-      <div className="bg" />
     </section>
   );
 };

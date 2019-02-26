@@ -47,35 +47,35 @@ describe('Test totalValue func', () => {
 describe('Test didUserWin function', () => {
   it('If user was dealt 21 off the bat, user should win', () => {
     const userWasDealt21 = true;
-    expect(didUserWin(21, 21, userWasDealt21)).toEqual(true);
+    expect(didUserWin(21, 21, userWasDealt21)).toEqual({ userWon: true, draw: false });
   });
 
   it('Return "draw" if scores are equal', () => {
-    expect(didUserWin(21, 21)).toEqual('draw');
-    expect(didUserWin(16, 16)).toEqual('draw');
-    expect(didUserWin(18, 18)).toEqual('draw');
+    expect(didUserWin(21, 21)).toEqual({ userWon: false, draw: true });
+    expect(didUserWin(16, 16)).toEqual({ userWon: false, draw: true });
+    expect(didUserWin(18, 18)).toEqual({ userWon: false, draw: true });
   });
 
   it('If dealer has a higher score dealer should win', () => {
-    expect(didUserWin(20, 21)).toEqual(false);
+    expect(didUserWin(20, 21)).toEqual({ userWon: false, draw: false });
   });
 
   it('If user has a higher score user should win', () => {
-    expect(didUserWin(21, 10)).toEqual(true);
-    expect(didUserWin(19, 18)).toEqual(true);
-    expect(didUserWin(18, 17)).toEqual(true);
+    expect(didUserWin(21, 10)).toEqual({ userWon: true, draw: false });
+    expect(didUserWin(19, 18)).toEqual({ userWon: true, draw: false });
+    expect(didUserWin(18, 17)).toEqual({ userWon: true, draw: false });
   });
 
   it('If user is BUST dealer should win', () => {
-    expect(didUserWin('BUST', 10)).toEqual(false);
-    expect(didUserWin('BUST', 18)).toEqual(false);
-    expect(didUserWin('BUST', 17)).toEqual(false);
+    expect(didUserWin('BUST', 10)).toEqual({ userWon: false, draw: false });
+    expect(didUserWin('BUST', 18)).toEqual({ userWon: false, draw: false });
+    expect(didUserWin('BUST', 17)).toEqual({ userWon: false, draw: false });
   });
 
   it('If dealer is BUST user should win', () => {
-    expect(didUserWin(21, 'BUST')).toEqual(true);
-    expect(didUserWin(19, 'BUST')).toEqual(true);
-    expect(didUserWin(18, 'BUST')).toEqual(true);
+    expect(didUserWin(21, 'BUST')).toEqual({ userWon: true, draw: false });
+    expect(didUserWin(19, 'BUST')).toEqual({ userWon: true, draw: false });
+    expect(didUserWin(18, 'BUST')).toEqual({ userWon: true, draw: false });
   });
 });
 
@@ -85,7 +85,7 @@ describe('Test returnScores func', () => {
       userScore: 0,
       dealerScore: 0,
     };
-    const userWon = true;
+    const userWon = { userWon: true, draw: false };
     expect(returnScores(prevScore, userWon)).toEqual({ userScore: 1, dealerScore: 0 });
   });
 
@@ -94,7 +94,7 @@ describe('Test returnScores func', () => {
       userScore: 0,
       dealerScore: 0,
     };
-    const userWon = false;
+    const userWon = { userWon: false, draw: false };
     expect(returnScores(prevScore, userWon)).toEqual({ userScore: 0, dealerScore: 1 });
   });
 
@@ -103,7 +103,7 @@ describe('Test returnScores func', () => {
       userScore: 0,
       dealerScore: 0,
     };
-    const userWon = 'draw';
+    const userWon = { userWon: false, draw: true };
     expect(returnScores(prevScore, userWon)).toEqual({ userScore: 0, dealerScore: 0 });
   });
 });

@@ -102,7 +102,7 @@ function DisplayCards({ id, isDisplayed, cardsToBeDealt }) {
 DisplayCards.propTypes = {
   id: PropTypes.string.isRequired,
   isDisplayed: PropTypes.bool.isRequired,
-  cardsToBeDealt: PropTypes.arrayOf().isRequired,
+  cardsToBeDealt: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default DisplayCards;

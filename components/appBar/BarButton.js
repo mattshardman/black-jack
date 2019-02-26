@@ -34,7 +34,7 @@ function BarButton({ icon, isDisabled, clickFunction }) {
 
 BarButton.propTypes = {
   icon: PropTypes.element.isRequired,
-  isDisabled: PropTypes.func.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
   clickFunction: PropTypes.func.isRequired,
 };
 

@@ -10,7 +10,7 @@ const WhoWonMessage = ({ winner }) => (
 );
 
 WhoWonMessage.propTypes = {
-  winner: PropTypes.bool.isRequired,
+  winner: PropTypes.string.isRequired,
 };
 
 export default WhoWonMessage;
