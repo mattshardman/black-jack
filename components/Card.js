@@ -42,7 +42,7 @@ const Card = ({ info }) => {
           animation-name: rotate;
           animation-iteration-count: 1;
           animation-duration: 1s;
-          box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
         }
 
         @media (max-width: 500px) {

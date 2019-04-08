@@ -10,22 +10,24 @@ const BtnIcon = ({ icon, fontSize, fontColor }) => (
 );
 
 const AppBar = ({
-  started, start, stick, finished, reset, hit, background, height,
+  gameStarted, start, stick, gameFinished, reset, hit, background, height,
 }) => {
   const appBarButtons = [{
     icon: 'pan_tool',
-    isDisabled: finished,
+    isDisabled: gameFinished,
     clickFunction: stick,
     fontSize: 16,
     fontColor: '#fff',
   },
   {
     icon: 'refresh',
-    isDisabled: !finished,
+    isDisabled: !gameFinished,
     clickFunction: reset,
     fontSize: 20,
     fontColor: '#fff',
   }];
+
+  const userWasDealt21 = false;
 
   return (
     <div className="app-bar">
@@ -37,11 +39,11 @@ const AppBar = ({
               fontColor="#17262a"
               fontSize={30}
             />
-)}
+          )}
           background="#faab1a"
           color="#17262a"
-          isDisabled={!!started && finished}
-          clickFunction={started ? hit : start}
+          isDisabled={!!gameStarted && gameFinished}
+          clickFunction={gameStarted ? hit : start}
         />
       </div>
 
@@ -51,7 +53,7 @@ const AppBar = ({
             key={each.icon}
             icon={<BtnIcon {...each} />}
             isDisabled={each.isDisabled}
-            clickFunction={() => each.clickFunction(false)}
+            clickFunction={() => each.clickFunction(userWasDealt21)}
           />
         )) }
       </div>
@@ -90,8 +92,8 @@ const AppBar = ({
 };
 
 AppBar.propTypes = {
-  started: PropTypes.bool.isRequired,
-  finished: PropTypes.bool.isRequired,
+  gameStarted: PropTypes.bool.isRequired,
+  gameFinished: PropTypes.bool.isRequired,
   start: PropTypes.func.isRequired,
   stick: PropTypes.func.isRequired,
   hit: PropTypes.func.isRequired,

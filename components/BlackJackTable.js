@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import AppBar from './appBar/AppBar';
-import {
-  makeDecks, returnCardToBeDealt,
-  returnNewDeckOfCardsWithSpecificCardRemoved, totalValueOfCards,
-  didUserWin, returnScores,
-  endOfGameMessage, startGame,
-} from './utils/utilFunctions';
+import * as utils from './utils/utilFunctions';
 import { TableStyles } from './Styles';
 import WhoWonMessage from './WhoWonMessage';
 import DisplayCards from './DisplayCards';
@@ -14,155 +10,146 @@ import SectionTitle from './SectionTitle';
 import ScoresSection from './ScoresSection';
 
 
-export const BlackJackTable = () => {
-  const storedScores = process.browser ? JSON.parse(localStorage.getItem('scores')) : null;
-  const startingScores = storedScores || { userScore: 0, dealerScore: 0 };
+export function BlackJackTable({
+  cards, scores, setScores, gameInitiated, setGameInitiated,
+}) {
+  const [gameStarted, setGameStarted] = useState(false);
+  const [gameFinished, setGameFinished] = useState(false);
 
-  // state
-  const [gameState, setGameState] = useState({
-    gameInitiated: false,
-    started: false,
-    finished: false,
-    userTotalCardValue: 0,
-    winner: null,
-  });
+  const [deckOfCards, setDeckOfCards] = useState(cards);
 
-  const [cardState, setCardState] = useState({
-    mainDeckOfCards: makeDecks(5),
-    cardsDealtToUser: [],
-    cardsDealtToDealer: [],
-  });
+  const [userCards, setUserCards] = useState([]);
+  const [userCardValue, setUserCardValue] = useState(0);
 
-  const [scores, setScores] = useState(startingScores);
+  const [dealerCards, setDealerCards] = useState([]);
+  const [dealerCardValue, setDealerCardValue] = useState(0);
 
-  function keepDealingCardsToDealerUntilTotalGreaterThan15(input, currentMainDeckOfCards) {
-    if (totalValueOfCards(input) < 15) {
-      const card = returnCardToBeDealt(currentMainDeckOfCards);
-      const dealerCards = [...input, card];
-      const newCards = returnNewDeckOfCardsWithSpecificCardRemoved(card, currentMainDeckOfCards);
+  const [winner, setWinner] = useState(false);
 
-      setCardState(prevCardState => ({
-        ...prevCardState,
-        cardsDealtToDealer: dealerCards,
-        mainDeckOfCards: newCards,
-      }));
+  const [userStick, setUserStick] = useState(false);
 
-      return keepDealingCardsToDealerUntilTotalGreaterThan15(dealerCards, newCards);
-    }
-    return null;
-  }
+  const start = () => {
+    setGameInitiated(true);
+    setGameStarted(true);
+    setGameFinished(false);
 
-  function reset() {
-    setGameState(prevGameState => ({
-      ...prevGameState,
-      started: false,
-      userTotalCardValue: 0,
-      winner: null,
-    }));
+    const startValues = utils.startGame(deckOfCards);
+    setDeckOfCards(startValues.cards);
+    setUserCards(startValues.userCards);
+    setDealerCards(startValues.dealerCards);
+  };
 
-    setCardState(prevCardState => ({
-      ...prevCardState,
-      cardsDealtToUser: [],
-      cardsDealtToDealer: [],
-    }));
-  }
+  const hit = () => {
+    const card = utils.returnCardToBeDealt(deckOfCards);
+    const newPack = utils.returnNewDeckOfCardsWithSpecificCardRemoved(card, deckOfCards);
 
-  function stick(userWasDealt21) {
-    setGameState((prevGameState) => {
-      const userTotal = totalValueOfCards(cardState.cardsDealtToUser);
-      const dealerTotal = totalValueOfCards(cardState.cardsDealtToDealer);
-      const userWon = didUserWin(userTotal, dealerTotal, userWasDealt21);
-      const winnerMessage = endOfGameMessage(userTotal, dealerTotal);
+    setUserCards([...userCards, card]);
+    setDeckOfCards(newPack);
+  };
 
-      setScores(prevScore => returnScores(prevScore, userWon));
+  const stick = () => {
+    setUserStick(true);
+    setGameFinished(true);
+  };
 
-      return {
-        ...prevGameState,
-        winner: winnerMessage,
-        userTotalCardValue: userTotal,
-        finished: true,
-      };
-    });
-  }
-
-  function start() {
-    const { newGameState, newCardState } = startGame(cardState, stick);
-    setGameState(newGameState);
-    setCardState(newCardState);
-
-    const { cardsDealtToDealer, mainDeckOfCards } = newCardState;
-    return keepDealingCardsToDealerUntilTotalGreaterThan15(cardsDealtToDealer, mainDeckOfCards);
-  }
-
-
-  function hit() {
-    setCardState((prevCardState) => {
-      const cardDealtToUser = returnCardToBeDealt(prevCardState.mainDeckOfCards);
-      const newCardsDealtToUser = [...cardState.cardsDealtToUser, cardDealtToUser];
-      const newPack = returnNewDeckOfCardsWithSpecificCardRemoved(cardDealtToUser, prevCardState.mainDeckOfCards);
-
-      setGameState(prevGameState => ({
-        ...prevGameState,
-        userTotalCardValue: totalValueOfCards(newCardsDealtToUser),
-      }));
-
-      return {
-        ...prevCardState,
-        mainDeckOfCards: newPack,
-        cardsDealtToUser: newCardsDealtToUser,
-      };
-    });
-  }
+  const reset = () => {
+    setGameStarted(false);
+    setWinner(false);
+    setUserStick(false);
+    setUserCards([]);
+    setDealerCards([]);
+  };
 
   useEffect(() => {
-    const isUserBust = gameState.userTotalCardValue === 'BUST';
-    if (isUserBust) {
-      stick(false);
-      setGameState(prevGameState => ({
-        ...prevGameState,
-        userTotalCardValue: 0,
-      }));
+    const value = utils.totalValueOfCards(userCards);
+    const isBust = value > 21;
+    setUserCardValue(value);
+    if (isBust) {
+      setUserCardValue('BUST');
+      setWinner('You lost, you went BUST');
+      setGameFinished(true);
     }
-  });
+  }, [userCards]);
+
+  useEffect(() => {
+    const value = utils.totalValueOfCards(dealerCards);
+    setDealerCardValue(value);
+    if (gameStarted) {
+      const hitAgain = value < 15;
+      if (hitAgain) {
+        const card = utils.returnCardToBeDealt(deckOfCards);
+        const newDealerCards = [...dealerCards, card];
+        const newCards = utils.returnNewDeckOfCardsWithSpecificCardRemoved(card, deckOfCards);
+
+        setDealerCards(newDealerCards);
+        setDeckOfCards(newCards);
+      }
+    }
+  }, [dealerCards]);
+
+  useEffect(() => {
+    if (userStick) {
+      const results = utils.determineWinner(userCardValue, dealerCardValue, scores);
+      setWinner(results.message);
+      setScores(results.score);
+      localStorage.setItem('scores', JSON.stringify(results.score));
+    }
+  }, [userStick]);
+
+  useEffect(() => {
+    const value = utils.totalValueOfCards(userCards);
+    const isBlackJack = value === 21;
+
+    if (isBlackJack) {
+      setGameFinished(true);
+      const result = utils.determineWinner('black-jack');
+      setWinner(result.message);
+      setScores(result.score);
+    }
+  }, [gameStarted]);
 
   const appBarProps = {
     start,
     stick,
     reset,
     hit,
-    started: gameState.started,
-    finished: gameState.finished,
+    gameStarted,
+    gameFinished,
   };
 
   return (
     <section className="table">
       <div className="content">
-        {!gameState.gameInitiated && <Logo />}
+        {!gameInitiated && <Logo />}
 
-        <ScoresSection gameState={gameState} scores={scores} />
+        <ScoresSection
+          userTotalCardValue={userCardValue}
+          gameInitiated={gameInitiated}
+          scores={scores}
+        />
 
         <SectionTitle
           title="Dealer's Cards"
-          gameStarted={gameState.started}
+          gameStarted={gameStarted}
         />
 
         <DisplayCards
-          isDisplayed={gameState.started}
+          isDisplayed={gameStarted}
           id="dealer-cards"
-          cardsToBeDealt={gameState.winner ? cardState.cardsDealtToDealer : [cardState.cardsDealtToDealer[0]]}
+          cardsToBeDealt={winner ? dealerCards : [dealerCards[0]]}
         />
 
-        <WhoWonMessage winner={gameState.winner || ''} />
+        <WhoWonMessage winner={winner || ''} />
 
         <SectionTitle
           title="Your Cards"
-          gameStarted={gameState.started}
+          gameStarted={gameStarted}
         />
 
         <DisplayCards
           isDisplayed
           id="your-cards"
-          cardsToBeDealt={cardState.cardsDealtToUser}
+          cardsToBeDealt={userCards}
         />
 
         <AppBar
@@ -175,6 +162,14 @@ export const BlackJackTable = () => {
       </div>
     </section>
   );
+}
+
+BlackJackTable.propTypes = {
+  cards: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  scores: PropTypes.shape().isRequired,
+  setScores: PropTypes.func.isRequired,
+  gameInitiated: PropTypes.bool.isRequired,
+  setGameInitiated: PropTypes.func.isRequired,
 };
 
 export default BlackJackTable;

@@ -1,5 +1,12 @@
 import uuid from 'uuid';
 
+function shuffleArray(array) {
+  const shuffledArray = array.map(a => ({ sort: Math.random(), value: a }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(a => a.value);
+  return shuffledArray;
+}
+
 const makeCards = () => {
   const suits = [{ suit: 'Hearts', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182708/lambda/hearts.png' },
     { suit: 'Spades', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182715/lambda/spades.png' },
@@ -24,21 +31,14 @@ const makeCards = () => {
 
   const deck = [].concat(...cards);
 
-  return deck;
+  const shuffledDeck = shuffleArray(deck);
+  return shuffledDeck;
 };
-
-function shuffleArray(array) {
-  const shuffledArray = array.map(a => ({ sort: Math.random(), value: a }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(a => a.value);
-  return shuffledArray;
-}
 
 const makeDecks = (num) => {
   const decks = [...Array(num)].map(() => makeCards());
   const deckArray = [].concat(...decks);
-  const shuffledDeckArray = shuffleArray(deckArray);
-  return shuffledDeckArray;
+  return deckArray;
 };
 
 const rand = max => Math.floor(Math.random() * max);
@@ -46,13 +46,11 @@ const rand = max => Math.floor(Math.random() * max);
 function returnNewDeckOfCardsWithSpecificCardRemoved(card, currentPackCards) {
   const cardIndex = currentPackCards.indexOf(card);
   const newPackCardsWithCardRemoved = currentPackCards.filter((each, index) => index !== cardIndex);
-  const newPackOfCards = [...newPackCardsWithCardRemoved, card];
-  return newPackOfCards;
+  return [...newPackCardsWithCardRemoved, card];
 }
 
 function returnCardToBeDealt(currentPackCards) {
-  const card = currentPackCards[0];
-  return card;
+  return currentPackCards[0];
 }
 
 function totalValueOfCards(input) {
@@ -61,75 +59,69 @@ function totalValueOfCards(input) {
     if (each.number === 'A') {
       hasAce = true;
     }
-    const newAcc = acc + each.value;
-    return newAcc;
+    return acc + each.value;
   }, 0);
 
   // play ace high unless this makes hand go bust
   if (hasAce && (cardTotal + 10) <= 21) {
-    const result = cardTotal + 10;
-    return result;
+    return cardTotal + 10;
   }
 
-  const result = cardTotal > 21 ? 'BUST' : cardTotal;
-  return result;
+  return cardTotal;
 }
 
-function didUserWin(userTotal, dealerTotal, userWasDealt21) {
-  if (userWasDealt21) {
-    return { userWon: true, draw: false };
+function determineWinner(userTotal, dealerTotal, score) {
+  if (userTotal === 'black-jack') {
+    return {
+      userWon: true,
+      draw: false,
+      message: 'You won, you got black jack!',
+      score: { ...score, userScore: score.userScore + 2 },
+    };
   }
 
-  if (userTotal === 'BUST') {
-    return { userWon: false, draw: false };
+  if (userTotal > 21) {
+    return {
+      userWon: false,
+      draw: false,
+      message: 'You lost, you went bust',
+      score: { ...score, dealerScore: score.dealerScore + 1 },
+    };
   }
 
-  if (dealerTotal === 'BUST') {
-    return { userWon: true, draw: false };
+  if (dealerTotal > 21) {
+    return {
+      userWon: true,
+      draw: false,
+      message: 'You won, the dealer went bust',
+      score: { ...score, userScore: score.userScore + 1 },
+    };
   }
 
   if (userTotal > dealerTotal) {
-    return { userWon: true, draw: false };
+    return {
+      userWon: true,
+      draw: false,
+      message: `You won, the dealer got ${dealerTotal}`,
+      score: { ...score, userScore: score.userScore + 1 },
+    };
   }
 
   if (userTotal === dealerTotal) {
-    return { userWon: false, draw: true };
+    return {
+      userWon: false,
+      draw: true,
+      message: 'It\'s a draw',
+      score: { ...score },
+    };
   }
 
-  return { userWon: false, draw: false };
-}
-
-function returnScores(prevScore, didUserWinObj) {
-  let newScores;
-  if (didUserWinObj.draw) {
-    newScores = { ...prevScore };
-  } else {
-    newScores = didUserWinObj.userWon
-      ? { ...prevScore, userScore: prevScore.userScore + 1 }
-      : { ...prevScore, dealerScore: prevScore.dealerScore + 1 };
-  }
-  localStorage.clear();
-  localStorage.setItem('scores', JSON.stringify(newScores));
-  return newScores;
-}
-
-function endOfGameMessage(userTotal, dealerTotal) {
-  if (userTotal === 'BUST') {
-    return 'You lost, you went BUST';
-  }
-
-  if (dealerTotal === 'BUST') {
-    return 'You won, the dealer went BUST';
-  }
-
-  if (userTotal === dealerTotal) {
-    return 'It\'s a draw';
-  }
-
-  if (userTotal > dealerTotal) {
-    return `You won, the dealer got ${dealerTotal}`;
-  }
-  return `You lost, the dealer got ${dealerTotal}`;
+  return {
+    userWon: false,
+    draw: false,
+    message: `You lost, the dealer got ${dealerTotal}`,
+    score: { ...score, dealerScore: score.dealerScore + 1 },
+  };
 }
 
 function deal2CardsToUserAnd1CardToDealer(currentPackCards) {
@@ -147,30 +139,16 @@ function deal2CardsToUserAnd1CardToDealer(currentPackCards) {
   return cardsDealt;
 }
 
-function startGame(cardState, stick) {
-  const currentMainDeckOfCards = [...cardState.mainDeckOfCards];
-  const initialDeal = deal2CardsToUserAnd1CardToDealer(currentMainDeckOfCards);
+function startGame(deckOfCards) {
+  const initialDeal = deal2CardsToUserAnd1CardToDealer(deckOfCards);
   const deckOfCardsWithDealtCardsRemoved = initialDeal.cards;
   const [dealerCard, ...userCards] = initialDeal.dealtCards;
-  const userCardsInitialValue = totalValueOfCards(userCards);
-
-  if (userCardsInitialValue === 21) {
-    const userWasDealt21 = true;
-    return stick(userWasDealt21);
-  }
 
   return {
-    newGameState: {
-      gameInitiated: true,
-      started: true,
-      userTotalCardValue: userCardsInitialValue,
-      finished: false,
-    },
-    newCardState: {
-      mainDeckOfCards: deckOfCardsWithDealtCardsRemoved,
-      cardsDealtToUser: userCards,
-      cardsDealtToDealer: [dealerCard],
-    },
+    userCards,
+    dealerCards: [dealerCard],
+    dealerCardsValue: 0,
+    cards: deckOfCardsWithDealtCardsRemoved,
   };
 }
 
@@ -181,9 +159,7 @@ export {
   returnNewDeckOfCardsWithSpecificCardRemoved,
   returnCardToBeDealt,
   totalValueOfCards,
-  didUserWin,
-  returnScores,
-  endOfGameMessage,
+  determineWinner,
   deal2CardsToUserAnd1CardToDealer,
   startGame,
 };

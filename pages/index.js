@@ -1,5 +1,6 @@
 import React from 'react';
 import BlackJackTable from '../components/BlackJackTable';
+import Home from '../components/Home';
 
 class Index extends React.Component {
   componentDidMount() {
@@ -14,7 +15,7 @@ class Index extends React.Component {
   }
 
   render() {
-    return <BlackJackTable />;
+    return <Home />;
   }
 }
 

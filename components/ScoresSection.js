@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ScoresSection({ gameState, scores }) {
+function ScoresSection({ userTotalCardValue, gameInitiated, scores }) {
   return (
     <div className="total-wrapper">
-      { gameState.gameInitiated && (
+      { gameInitiated && (
       <div className="scores">
         <div>You: <span className="score-number">{scores.userScore}</span></div>
         <div>Dealer: <span className="score-number">{scores.dealerScore}</span></div>
-        <div>Hand total: <span className="score-number">{gameState.userTotalCardValue}</span></div>
+        <div>Hand total: <span className="score-number">{userTotalCardValue}</span></div>
       </div>
       )}
     </div>
@@ -16,7 +16,8 @@ function ScoresSection({ gameState, scores }) {
 }
 
 ScoresSection.propTypes = {
-  gameState: PropTypes.shape().isRequired,
+  userTotalCardValue: PropTypes.number.isRequired,
+  gameInitiated: PropTypes.bool.isRequired,
   scores: PropTypes.shape().isRequired,
 };
 

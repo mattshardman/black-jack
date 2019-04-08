@@ -26,6 +26,8 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content="#000" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
+          <title>WackJack</title>
+          <meta name="description" content="WackJack - black-jack game" />
           <style>{`
             body div header { 
               box-sizing: border-box; 

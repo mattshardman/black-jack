@@ -1,5 +1,5 @@
 import {
-  totalValueOfCards, didUserWin, returnScores, endOfGameMessage,
+  totalValueOfCards, didUserWin, endOfGameMessage,
 } from '../components/utils/utilFunctions';
 
 describe('Test totalValue func', () => {
@@ -48,6 +48,7 @@ describe('Test didUserWin function', () => {
   it('If user was dealt 21 off the bat, user should win', () => {
     const userWasDealt21 = true;
     expect(didUserWin(21, 21, userWasDealt21)).toEqual({ userWon: true, draw: false });
+    expect(didUserWin(21, 15, false)).toEqual({ userWon: true, draw: false });
   });
 
   it('Return "draw" if scores are equal', () => {
@@ -100,11 +101,11 @@ describe('Test returnScores func', () => {
 
   it('Should not add anything to either score if players draw', () => {
     const prevScore = {
-      userScore: 0,
-      dealerScore: 0,
+      userScore: 9,
+      dealerScore: 9,
     };
     const userWon = { userWon: false, draw: true };
-    expect(returnScores(prevScore, userWon)).toEqual({ userScore: 0, dealerScore: 0 });
+    expect(returnScores(prevScore, userWon)).toEqual({ userScore: 9, dealerScore: 9 });
   });
 });
 
