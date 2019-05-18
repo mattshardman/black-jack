@@ -5,7 +5,7 @@ import Card from './Card';
 function DisplayCards({ id, isDisplayed, cardsToBeDealt }) {
   const slideRight = () => {
     const mobileWidth = process.browser ? (window.innerWidth / 3) : 100;
-    const slider = document.querySelector(`#${id}`);
+    const slider = document.getElementById(id);
     const width = mobileWidth * cardsToBeDealt.length;
 
     slider.scrollTo({
