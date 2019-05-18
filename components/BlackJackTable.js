@@ -63,7 +63,9 @@ export function BlackJackTable({
   useEffect(() => {
     const value = utils.totalValueOfCards(userCards);
     const isBust = value > 21;
+
     setUserCardValue(value);
+
     if (isBust) {
       setUserCardValue('BUST');
       setWinner('You lost, you went BUST');
@@ -102,7 +104,7 @@ export function BlackJackTable({
 
     if (isBlackJack) {
       setGameFinished(true);
-      const result = utils.determineWinner('black-jack');
+      const result = utils.determineWinner('black-jack', null, scores);
       setWinner(result.message);
       setScores(result.score);
     }
@@ -123,7 +125,7 @@ export function BlackJackTable({
         {!gameInitiated && <Logo />}
 
         <ScoresSection
-          userTotalCardValue={userCardValue}
+          userCardValue={userCardValue}
           gameInitiated={gameInitiated}
           scores={scores}
         />
@@ -143,12 +145,14 @@ export function BlackJackTable({
 
         <SectionTitle
           title="Your Cards"
+          showScore
+          userCardValue={userCardValue}
           gameStarted={gameStarted}
         />
 
         <DisplayCards
-          isDisplayed
           id="your-cards"
+          isDisplayed
           cardsToBeDealt={userCards}
         />
 

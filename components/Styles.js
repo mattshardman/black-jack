@@ -12,6 +12,7 @@ export const TableStyles = () => (
   justify-content: space-between;
   align-items: center;
   font-family: Open Sans, sans-serif;
+  background: #f4f8ff;
 }
 
 .content {

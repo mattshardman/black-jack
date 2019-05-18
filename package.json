@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next",
     "now-build": "next build && next export",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "Matt Hardman",
@@ -16,12 +16,13 @@
     "prop-types": "^15.7.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.13.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.5",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.10.0",
+    
     "eslint": "^5.0.1",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.13.0",
