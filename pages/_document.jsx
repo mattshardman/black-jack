@@ -14,10 +14,6 @@ export default class MyDocument extends Document {
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" />
           <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-          />
-          <link
             rel="shortcut icon"
             href="https://res.cloudinary.com/dgdniqfi9/image/upload/v1550240312/lambda/cards-small.png"
           />
@@ -26,7 +22,6 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content="#000" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
-          <title>WackJack</title>
           <meta name="description" content="WackJack - black-jack game" />
           <style>{`
             body div header { 

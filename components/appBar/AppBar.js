@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { PlayArrow, PanTool, Refresh } from '@material-ui/icons';
 import CentralButton from './CentralButton';
 import BarButton from './BarButton';
 
@@ -13,18 +14,16 @@ const AppBar = ({
   gameStarted, start, stick, gameFinished, reset, hit, background, height,
 }) => {
   const appBarButtons = [{
-    icon: 'pan_tool',
+    id: 1,
+    icon: <PanTool style={{ fontSize: 16, color: '#fff' }} />,
     isDisabled: gameFinished,
     clickFunction: stick,
-    fontSize: 16,
-    fontColor: '#fff',
   },
   {
-    icon: 'refresh',
+    id: 2,
+    icon: <Refresh style={{ fontSize: 20, color: '#fff' }} />,
     isDisabled: !gameFinished,
     clickFunction: reset,
-    fontSize: 20,
-    fontColor: '#fff',
   }];
 
   const userWasDealt21 = false;
@@ -34,10 +33,8 @@ const AppBar = ({
       <div className="central-btn-wrapper">
         <CentralButton
           icon={(
-            <BtnIcon
-              icon="play_arrow"
-              fontColor="#17262a"
-              fontSize={30}
+            <PlayArrow
+              style={{ color: '#17262a', fontSize: 30 }}
             />
           )}
           background="#faab1a"
@@ -50,8 +47,8 @@ const AppBar = ({
       <div className="buttons-section">
         { appBarButtons.map(each => (
           <BarButton
-            key={each.icon}
-            icon={<BtnIcon {...each} />}
+            key={each.id}
+            icon={each.icon}
             isDisabled={each.isDisabled}
             clickFunction={() => each.clickFunction(userWasDealt21)}
           />

@@ -1,16 +1,24 @@
-import React from 'react';
-import { register, unregister } from 'next-offline/runtime'
+import React from "react";
+import Head from "next/head";
+import { register, unregister } from "next-offline/runtime";
 
-import Home from '../components/Home';
+import Home from "../components/Home";
 
 function Index() {
-    React.useEffect(() => {
-      register()
+  React.useEffect(() => {
+    register();
 
-      return () => unregister()
-    }, []);
-    
-    return <Home />;
+    return () => unregister();
+  }, []);
+
+  return (
+    <>
+      <Head>
+        <title>Wack Jack</title>
+      </Head>
+      <Home />
+    </>
+  );
 }
 
 export default Index;
