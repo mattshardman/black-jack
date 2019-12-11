@@ -23,4 +23,4 @@ The app works very similar to real black jack in that:
 - the dealer will play in the same manner as a house dealer in a casino; and
 - double points are awarded for getting "black jack" (21 from the first deal).
 
-<img src="public/blackjack.gif" width="50%">
+<img src="https://res.cloudinary.com/dgdniqfi9/image/upload/v1576056469/portfolio/blackjack.gif" width="50%">
