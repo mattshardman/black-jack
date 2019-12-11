@@ -1,21 +1,16 @@
 import React from 'react';
+import { register, unregister } from 'next-offline/runtime'
+
 import Home from '../components/Home';
 
-class Index extends React.Component {
-  componentDidMount() {
-    // if ('serviceWorker' in navigator) {
-    //   navigator.serviceWorker.register('/service-worker.js')
-    //     .then(() => {
-    //       console.log('Registered');
-    //     }).catch((err) => {
-    //       console.log('error', err);
-    //     });
-    // }
-  }
+function Index() {
+    React.useEffect(() => {
+      register()
 
-  render() {
+      return () => unregister()
+    }, []);
+    
     return <Home />;
-  }
 }
 
 export default Index;

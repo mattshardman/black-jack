@@ -13,7 +13,7 @@ function Home() {
 
   useEffect(() => {
     const savedScores: Scores = JSON.parse(localStorage.getItem('scores'));
-    if (scores) {
+    if (savedScores) {
       setScores(savedScores);
     }
   }, []);

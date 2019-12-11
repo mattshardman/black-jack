@@ -1,21 +1,20 @@
 {
-    "short_name": "WackJack",
-    "name": "WackJack Black Jack game",
-    "icons": [
-      {
-        "src": "https://res.cloudinary.com/dgdniqfi9/image/upload/v1550240312/lambda/cards-small.png",
-        "type": "image/png",
-        "sizes": "192x192"
-      },
-      {
-        "src": "https://res.cloudinary.com/dgdniqfi9/image/upload/v1550240315/lambda/cards.png",
-        "type": "image/png",
-        "sizes": "512x512"
-      }
-    ],
-    "start_url": "/",
-    "background_color": "#000",
-    "display": "standalone",
-    "scope": "/",
-    "theme_color": "#000"
-  }
+  "short_name": "WackJack",
+  "name": "WackJack Black Jack game",
+  "icons": [{
+      "src": "https://res.cloudinary.com/dgdniqfi9/image/upload/v1550240312/lambda/cards-small.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://res.cloudinary.com/dgdniqfi9/image/upload/v1550240315/lambda/cards.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#000",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#000"
+}
