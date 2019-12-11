@@ -1,18 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { PlayArrow, PanTool, Refresh } from '@material-ui/icons';
+
 import CentralButton from './CentralButton';
 import BarButton from './BarButton';
 
-const BtnIcon = ({ icon, fontSize, fontColor }) => (
-  <i className="material-icons" style={{ fontSize, fontColor }}>
-    {icon}
-  </i>
-);
+interface AppBarProps {
+  gameStarted: boolean,
+  start: Function,
+  stick: Function,
+  gameFinished: boolean,
+  reset: Function,
+  hit: Function,
+  background: string,
+  height: string
+}
 
 const AppBar = ({
   gameStarted, start, stick, gameFinished, reset, hit, background, height,
-}) => {
+}: AppBarProps) => {
   const appBarButtons = [{
     id: 1,
     icon: <PanTool style={{ fontSize: 16, color: '#fff' }} />,
@@ -28,6 +33,8 @@ const AppBar = ({
 
   const userWasDealt21 = false;
 
+  const startOrHit: any = gameStarted ? hit : start;
+
   return (
     <div className="app-bar">
       <div className="central-btn-wrapper">
@@ -40,7 +47,7 @@ const AppBar = ({
           background="#faab1a"
           color="#17262a"
           isDisabled={!!gameStarted && gameFinished}
-          clickFunction={gameStarted ? hit : start}
+          clickFunction={startOrHit}
         />
       </div>
 
@@ -88,21 +95,5 @@ const AppBar = ({
   );
 };
 
-AppBar.propTypes = {
-  gameStarted: PropTypes.bool.isRequired,
-  gameFinished: PropTypes.bool.isRequired,
-  start: PropTypes.func.isRequired,
-  stick: PropTypes.func.isRequired,
-  hit: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-  height: PropTypes.string.isRequired,
-  background: PropTypes.string.isRequired,
-};
-
-BtnIcon.propTypes = {
-  icon: PropTypes.string.isRequired,
-  fontSize: PropTypes.number.isRequired,
-  fontColor: PropTypes.string.isRequired,
-};
 
 export default AppBar;

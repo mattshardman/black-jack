@@ -1,7 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { ReactChild, ReactElement } from 'react';
 
-function BarButton({ icon, isDisabled, clickFunction }) {
+interface BarButtonProps {
+  icon: ReactElement,
+  isDisabled: boolean,
+  clickFunction: any
+}
+
+function BarButton({ icon, isDisabled, clickFunction } : BarButtonProps) {
   return (
     <button
       type="button"
@@ -31,11 +36,5 @@ function BarButton({ icon, isDisabled, clickFunction }) {
     </button>
   );
 }
-
-BarButton.propTypes = {
-  icon: PropTypes.element.isRequired,
-  isDisabled: PropTypes.bool.isRequired,
-  clickFunction: PropTypes.func.isRequired,
-};
 
 export default BarButton;

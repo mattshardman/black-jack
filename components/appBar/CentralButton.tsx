@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
+
+interface CentralButtonProps {
+  icon: ReactElement,
+  background: string,
+  color: string,
+  isDisabled: boolean,
+  clickFunction: any
+}
 
 function CentralButton({
   icon, background, color, isDisabled, clickFunction,
-}) {
+} : CentralButtonProps) {
   const [clicked, setClicked] = useState(false);
   return (
     <button
       type="button"
+      name="central button"
       className={clicked ? 'hit-btn hit-btn-click' : 'hit-btn'}
       disabled={isDisabled}
       onClick={clickFunction}

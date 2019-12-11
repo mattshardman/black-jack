@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from './Card';
 import { CardType } from './utils/types';
+import { ArrowForward } from '@material-ui/icons';
 
 interface CardInfo {
   id: string,
@@ -25,9 +26,7 @@ function DisplayCards({ id, isDisplayed, cardsToBeDealt } : CardInfo) {
     <div className="display-card-wrapper">
       {cardsToBeDealt.length > 2 && (
         <button type="button" onClick={slideRight} className="btn">
-          <i className="material-icons" style={{ fontSize: 16 }}>
-            arrow_forward
-          </i>
+         <ArrowForward style={{ fontSize: 16 }} /> 
         </button>
       )}
       <div id={id} className="cards">
