@@ -1,13 +1,14 @@
 import uuid from 'uuid';
+import { CardType, Scores } from './types';
 
-function shuffleArray(array) {
+function shuffleArray(array: Array<CardType>) {
   const shuffledArray = array.map(a => ({ sort: Math.random(), value: a }))
     .sort((a, b) => a.sort - b.sort)
     .map(a => a.value);
   return shuffledArray;
 }
 
-const makeCards = () => {
+export const makeCards = () => {
   const suits = [{ suit: 'Hearts', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182708/lambda/hearts.png' },
     { suit: 'Spades', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182715/lambda/spades.png' },
     { suit: 'Clubs', img: 'https://res.cloudinary.com/dgdniqfi9/image/upload/v1551182705/lambda/clubs.png' },
@@ -17,7 +18,7 @@ const makeCards = () => {
 
   const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 1];
 
-  const cards = suits.reduce((acc, suit) => {
+  const cards: Array<CardType> = suits.reduce((acc, suit) => {
     const cardObj = numbers.map((number, index) => ({
       id: uuid(),
       suit: suit.suit,
@@ -35,27 +36,27 @@ const makeCards = () => {
   return shuffledDeck;
 };
 
-const makeDecks = (num) => {
+export const makeDecks = (num: number) => {
   const decks = [...Array(num)].map(() => makeCards());
   const deckArray = [].concat(...decks);
   return deckArray;
 };
 
-const rand = max => Math.floor(Math.random() * max);
+export const rand = (max: number) => Math.floor(Math.random() * max);
 
-function returnNewDeckOfCardsWithSpecificCardRemoved(card, currentPackCards) {
+export function returnNewDeckOfCardsWithSpecificCardRemoved(card: CardType, currentPackCards: Array<CardType>) {
   const cardIndex = currentPackCards.indexOf(card);
   const newPackCardsWithCardRemoved = currentPackCards.filter((each, index) => index !== cardIndex);
   return [...newPackCardsWithCardRemoved, card];
 }
 
-function returnCardToBeDealt(currentPackCards) {
+export function returnCardToBeDealt(currentPackCards: Array<CardType>) {
   return currentPackCards[0];
 }
 
-function totalValueOfCards(input) {
+export function totalValueOfCards(card: Array<CardType>) {
   let hasAce = false;
-  const cardTotal = input.reduce((acc, each) => {
+  const cardTotal = card.reduce((acc, each) => {
     if (each.number === 'A') {
       hasAce = true;
     }
@@ -70,8 +71,8 @@ function totalValueOfCards(input) {
   return cardTotal;
 }
 
-function determineWinner(userTotal, dealerTotal, score) {
-  if (userTotal === 'black-jack') {
+export function determineWinner(userTotal: number, dealerTotal: number, score: Scores) {
+  if (userTotal === -1) {
     return {
       userWon: true,
       draw: false,
@@ -124,7 +125,7 @@ function determineWinner(userTotal, dealerTotal, score) {
   };
 }
 
-function deal2CardsToUserAnd1CardToDealer(currentPackCards) {
+export function deal2CardsToUserAnd1CardToDealer(currentPackCards: Array<CardType>) {
   const cardsDealt = [...Array(3)].reduce((acc) => {
     const card = returnCardToBeDealt(acc.cards);
     const newCards = returnNewDeckOfCardsWithSpecificCardRemoved(card, acc.cards);
@@ -139,7 +140,7 @@ function deal2CardsToUserAnd1CardToDealer(currentPackCards) {
   return cardsDealt;
 }
 
-function startGame(deckOfCards) {
+export function startGame(deckOfCards: Array<CardType>) {
   const initialDeal = deal2CardsToUserAnd1CardToDealer(deckOfCards);
   const deckOfCardsWithDealtCardsRemoved = initialDeal.cards;
   const [dealerCard, ...userCards] = initialDeal.dealtCards;
@@ -151,15 +152,3 @@ function startGame(deckOfCards) {
     cards: deckOfCardsWithDealtCardsRemoved,
   };
 }
-
-export {
-  makeCards,
-  makeDecks,
-  rand,
-  returnNewDeckOfCardsWithSpecificCardRemoved,
-  returnCardToBeDealt,
-  totalValueOfCards,
-  determineWinner,
-  deal2CardsToUserAnd1CardToDealer,
-  startGame,
-};

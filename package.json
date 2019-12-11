@@ -5,30 +5,31 @@
   "main": "index.js",
   "scripts": {
     "dev": "next",
-    "now-build": "next build && next export",
+    "now-build": "next build",
     "test": "jest --watch"
   },
   "keywords": [],
   "author": "Matt Hardman",
   "license": "ISC",
   "dependencies": {
-    "next": "^8.0.0",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.13.0",
+    "next": "^9.0.0",
     "prop-types": "^15.7.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "uuid": "^3.3.2",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.13.0"
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@types/react": "^16.9.16",
     "babel-eslint": "^8.2.5",
-    
     "eslint": "^5.0.1",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.10.0",
     "jest": "^24.1.0",
-    "react-test-renderer": "^16.8.3"
+    "react-test-renderer": "^16.8.3",
+    "typescript": "^3.7.3"
   }
 }

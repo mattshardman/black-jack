@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from './appBar/AppBar';
 
-import * as utils from './utils/utilFunctions';
+import * as utils from './utils/utilFunctions.ts';
 import { TableStyles } from './Styles';
-import WhoWonMessage from './WhoWonMessage';
-import DisplayCards from './DisplayCards';
-import Logo from './Logo';
-import SectionTitle from './SectionTitle';
-import ScoresSection from './ScoresSection';
+import WhoWonMessage from './WhoWonMessage.tsx';
+import DisplayCards from './DisplayCards.tsx';
+import Logo from './Logo.tsx';
+import SectionTitle from './SectionTitle.tsx';
+import ScoresSection from './ScoresSection.tsx';
 
 export function BlackJackTable({
   cards,
@@ -120,7 +120,7 @@ export function BlackJackTable({
 
     if (isBlackJack) {
       setGameFinished(true);
-      const result = utils.determineWinner('black-jack', null, scores);
+      const result = utils.determineWinner(-1, null, scores);
       setWinner(result.message);
       setScores(result.score);
     }

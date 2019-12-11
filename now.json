@@ -2,12 +2,6 @@
   "version": 2,
   "alias": ["blackjack", "wackjack"],
   "builds": [
-    {
-      "src": "package.json",
-      "use": "@now/static-build",
-      "config": { "distDir": "out" }
-    },
-    { "src": "/static/manifest.json", "use": "@now/static" },
-    { "src": "service-worker.js", "use": "@now/static" }
+    { "use": "@now/next", "src": "next.config.js" } 
   ]
 }

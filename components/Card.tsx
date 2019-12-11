@@ -1,8 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const Card = ({ info }) => {
-  const mobileWidth = process.browser ? `${window.innerWidth / 3}px` : '100px';
+interface Info {
+  number: string,
+  img: string,
+}
+
+const Card = ({ info } : { info: Info }) => {
+  const mobileWidth = process.browser ? window.innerWidth / 3 : 100;
   return (
     <div className="card">
       <div className="info-top">
@@ -22,7 +26,7 @@ const Card = ({ info }) => {
           margin: 0;
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
           h1 {
             font-size: 12px;
           }
@@ -34,7 +38,7 @@ const Card = ({ info }) => {
           align-items: center;
           justify-content: center;
           flex-direction: column;
-          height: 180px;
+          height: 75%;
           width: 126px;
           border-radius: 5px;
           background: radial-gradient(#fff, #fafafa);   
@@ -45,10 +49,12 @@ const Card = ({ info }) => {
           box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
           .card {
-            height: 175px;
-            width: ${mobileWidth};
+            box-sizing: border-box;
+            max-height: 90%;
+            height: ${mobileWidth * 3.5 / 2.25}px;
+            width: ${mobileWidth}px;
           }
         }
 
@@ -117,13 +123,6 @@ const Card = ({ info }) => {
       </style>
     </div>
   );
-};
-
-Card.propTypes = {
-  info: PropTypes.shape({
-    number: PropTypes.string.isRequired,
-    img: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
 export default Card;
